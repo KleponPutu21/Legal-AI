@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* #e7f6f9 - Light Cyan Background */
+    --background: 190 60% 94%;
+    --foreground: 193 73% 26%;
+    /* Dark Teal for text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 193 73% 26%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 193 73% 26%;
+
+    /* #125d72 - Dark Teal Primary */
+    --primary: 193 73% 26%;
+    --primary-foreground: 190 60% 94%;
+
+    /* #14a2ba - Cyan Secondary */
+    --secondary: 189 81% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 189 81% 90%;
+    /* Lighter version of secondary */
+    --muted-foreground: 193 73% 40%;
+
+    --accent: 189 81% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 193 73% 20%;
+    --input: 193 73% 20%;
+    --ring: 193 73% 26%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Adjusted for dark mode if needed, but primarily sticking to requested palette for now. */
+    --background: 193 73% 10%;
+    --foreground: 190 60% 94%;
+
+    --card: 193 73% 15%;
+    --card-foreground: 190 60% 94%;
+
+    --popover: 193 73% 15%;
+    --popover-foreground: 190 60% 94%;
+
+    --primary: 190 60% 94%;
+    --primary-foreground: 193 73% 26%;
+
+    --secondary: 189 81% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 193 73% 20%;
+    --muted-foreground: 189 81% 80%;
+
+    --accent: 189 81% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 193 73% 26%;
+    --input: 193 73% 26%;
+    --ring: 189 81% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
