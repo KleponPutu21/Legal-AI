@@ -21,7 +21,7 @@ const toggleSidebar = () => {
     >
       <div class="h-16 flex items-center border-b px-4 whitespace-nowrap overflow-hidden">
         <router-link to="/legal" class="flex items-center gap-2 font-semibold text-primary">
-          <Scale class="h-6 w-6 shrink-0" />
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="h-8 w-auto shrink-0" />
           <span :class="['transition-opacity duration-300', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
             PLN Legal AI
           </span>

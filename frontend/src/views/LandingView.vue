@@ -17,10 +17,10 @@ const scrollToSection = (id: string) => {
     <header class="fixed top-0 w-full z-50 border-b border-white/10 bg-background/80 backdrop-blur-md">
       <div class="container flex h-16 items-center justify-between px-4 relative">
         <div class="flex items-center gap-2 font-bold text-xl tracking-tight text-primary z-10">
-          <Zap class="h-6 w-6 text-cyan-500 fill-cyan-500" />
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
+          <img src="https://web.pln.co.id/statics/uploads/2023/03/PLN-Icon-Plus.png" alt="PLN Icon Plus" class="h-8 w-auto" />
+          <!-- <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
             PLN Icon Plus
-          </span>
+          </span> -->
         </div>
         
         <nav class="hidden md:flex gap-6 text-sm font-medium text-muted-foreground absolute left-1/2 -translate-x-1/2">
@@ -241,12 +241,12 @@ const scrollToSection = (id: string) => {
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 bg-card border-t text-card-foreground">
+    <footer class="py-6 bg-card border-t text-card-foreground">
       <div class="container px-4">
         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2 font-bold text-lg">
-                <Zap class="h-5 w-5 text-cyan-500" />
-                <span>PLN Icon Plus</span>
+                <img src="https://web.pln.co.id/statics/uploads/2023/03/PLN-Icon-Plus.png" alt="PLN Icon Plus" class="h-7 w-auto" />
+                <!-- <span>PLN Icon Plus</span> -->
             </div>
             <p class="text-sm text-muted-foreground">
                 &copy; 2025 PLN Icon Plus. All rights reserved.
