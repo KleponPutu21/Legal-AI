@@ -16,10 +16,10 @@ import { ArrowRight, MessageSquare, FileText, Search } from 'lucide-vue-next'
       </p>
       <div class="flex justify-center gap-4">
         <Button size="lg" as-child>
-          <router-link to="/chatbot">Mulai Konsultasi</router-link>
+          <router-link to="/legal/chatbot">Mulai Konsultasi</router-link>
         </Button>
         <Button variant="outline" size="lg" as-child>
-          <router-link to="/legal-search">Cari Regulasi</router-link>
+          <router-link to="/legal/legal-search">Cari Regulasi</router-link>
         </Button>
       </div>
     </section>
@@ -41,7 +41,7 @@ import { ArrowRight, MessageSquare, FileText, Search } from 'lucide-vue-next'
         </CardContent>
         <CardFooter>
           <Button variant="ghost" class="w-full justify-start" as-child>
-            <router-link to="/chatbot">
+            <router-link to="/legal/chatbot">
               Coba Chatbot <ArrowRight class="ml-2 w-4 h-4" />
             </router-link>
           </Button>
@@ -62,7 +62,7 @@ import { ArrowRight, MessageSquare, FileText, Search } from 'lucide-vue-next'
         </CardContent>
         <CardFooter>
           <Button variant="ghost" class="w-full justify-start" as-child>
-            <router-link to="/document-analysis">
+            <router-link to="/legal/document-analysis">
               Analisa Dokumen <ArrowRight class="ml-2 w-4 h-4" />
             </router-link>
           </Button>
@@ -83,7 +83,7 @@ import { ArrowRight, MessageSquare, FileText, Search } from 'lucide-vue-next'
         </CardContent>
         <CardFooter>
           <Button variant="ghost" class="w-full justify-start" as-child>
-            <router-link to="/legal-search">
+            <router-link to="/legal/legal-search">
               Mulai Pencarian <ArrowRight class="ml-2 w-4 h-4" />
             </router-link>
           </Button>

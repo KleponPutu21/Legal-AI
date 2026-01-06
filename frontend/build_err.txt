@@ -1,0 +1,22 @@
+[31m✗[39m Build failed in 839ms
+[31merror during build:
+[31msrc/main.ts (4:7): "default" is not exported by "src/router/index.js", imported by "src/main.ts".[31m
+file: [36mC:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/src/main.ts:4:7[31m
+[33m
+2: import './style.css'
+3: import App from './App.vue'
+4: import router from './router'
+          ^
+5: 
+6: const app = createApp(App)
+[31m
+    at getRollupError (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Module.error (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:17022:16)
+    at Module.traceVariable (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:17478:29)
+    at ModuleScope.findVariable (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:15141:39)
+    at Identifier.bind (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:5462:40)
+    at CallExpression.bind (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2825:28)
+    at CallExpression.bind (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:12172:15)
+    at ExpressionStatement.bind (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2829:23)
+    at Program.bind (file:///C:/Users/bayun/Kuliah/peelen/Legal-AI/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2825:28)[39m

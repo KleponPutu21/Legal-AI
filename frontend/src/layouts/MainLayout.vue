@@ -20,7 +20,7 @@ const toggleSidebar = () => {
       ]"
     >
       <div class="h-16 flex items-center border-b px-4 whitespace-nowrap overflow-hidden">
-        <router-link to="/" class="flex items-center gap-2 font-semibold text-primary">
+        <router-link to="/legal" class="flex items-center gap-2 font-semibold text-primary">
           <Scale class="h-6 w-6 shrink-0" />
           <span :class="['transition-opacity duration-300', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
             LegalBot ID
@@ -31,9 +31,10 @@ const toggleSidebar = () => {
       <div class="flex-1 overflow-x-hidden py-4">
         <nav class="grid items-start px-2 text-sm font-medium space-y-2">
           <router-link 
-            to="/" 
+            to="/legal" 
             :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted', !isSidebarOpen && 'justify-center']"
-            active-class="bg-secondary/10 text-secondary"
+            active-class="bg-secondary/10 text-secondary border-r-2 border-secondary"
+            exact-active-class="bg-secondary/10 text-secondary"
             :title="!isSidebarOpen ? 'Beranda' : ''"
           >
             <Home class="h-4 w-4 shrink-0" />
@@ -41,7 +42,7 @@ const toggleSidebar = () => {
           </router-link>
           
           <router-link 
-            to="/chatbot" 
+            to="/legal/chatbot" 
             :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted', !isSidebarOpen && 'justify-center']"
             active-class="bg-secondary/10 text-secondary"
             :title="!isSidebarOpen ? 'Chatbot Hukum' : ''"
@@ -51,7 +52,7 @@ const toggleSidebar = () => {
           </router-link>
 
           <router-link 
-            to="/document-analysis" 
+            to="/legal/document-analysis" 
             :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted', !isSidebarOpen && 'justify-center']"
             active-class="bg-secondary/10 text-secondary"
             :title="!isSidebarOpen ? 'Analisa Dokumen' : ''"
@@ -61,7 +62,7 @@ const toggleSidebar = () => {
           </router-link>
 
           <router-link 
-            to="/legal-search" 
+            to="/legal/legal-search" 
             :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted', !isSidebarOpen && 'justify-center']"
             active-class="bg-secondary/10 text-secondary"
             :title="!isSidebarOpen ? 'Pencarian Legal' : ''"
