@@ -23,7 +23,7 @@ const toggleSidebar = () => {
         <router-link to="/legal" class="flex items-center gap-2 font-semibold text-primary">
           <Scale class="h-6 w-6 shrink-0" />
           <span :class="['transition-opacity duration-300', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
-            LegalBot ID
+            PLN Legal AI
           </span>
         </router-link>
       </div>
