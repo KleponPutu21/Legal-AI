@@ -2,7 +2,15 @@
  * API Service untuk menghubungkan Frontend dengan Backend FastAPI.
  */
 
-const API_URL = 'http://localhost:8000/api';
+// Ambil dari Environment Variable Vercel / Vite
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
+/**
+ * Validasi agar error langsung kelihatan kalau env belum diset
+ */
+if (!API_URL) {
+    throw new Error("VITE_API_BASE_URL is not defined");
+}
 
 // Tipe data untuk pesan chat
 export interface ChatMessage {
@@ -14,12 +22,10 @@ export interface ChatMessage {
 
 /**
  * Mengirim pesan ke AI
- * @param message Pesan dari pengguna
- * @returns Respon dari AI
  */
 export async function sendMessage(message: string): Promise<string> {
     try {
-        const response = await fetch(`${API_URL}/chat`, {
+        const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,16 +47,14 @@ export async function sendMessage(message: string): Promise<string> {
 }
 
 /**
- * Menganalisa dokumen
- * @param file File dokumen yang diupload
- * @returns Hasil analisa
+ * Analisa dokumen
  */
 export async function analyzeDocument(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-        const response = await fetch(`${API_URL}/analyze`, {
+        const response = await fetch(`${API_URL}/api/analyze`, {
             method: 'POST',
             body: formData,
         });
@@ -69,13 +73,11 @@ export async function analyzeDocument(file: File): Promise<string> {
 }
 
 /**
- * Mencari data legal
- * @param query Kata kunci pencarian
- * @returns Hasil pencarian
+ * Pencarian legal
  */
 export async function searchLegal(query: string): Promise<any[]> {
     try {
-        const response = await fetch(`${API_URL}/search`, {
+        const response = await fetch(`${API_URL}/api/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +90,6 @@ export async function searchLegal(query: string): Promise<any[]> {
             throw new Error(errorData.detail || 'Failed to search');
         }
 
-        // Backend mengembalikan array, jadi langsung return
         return await response.json();
     } catch (error) {
         console.error('API Error:', error);
