@@ -15,18 +15,20 @@ const scrollToSection = (id: string) => {
   <div class="min-h-screen bg-background font-sans">
     <!-- Header -->
     <header class="fixed top-0 w-full z-50 border-b border-white/10 bg-background/80 backdrop-blur-md">
-      <div class="container flex h-16 items-center justify-between px-4">
-        <div class="flex items-center gap-2 font-bold text-xl tracking-tight text-primary">
+      <div class="container flex h-16 items-center justify-between px-4 relative">
+        <div class="flex items-center gap-2 font-bold text-xl tracking-tight text-primary z-10">
           <Zap class="h-6 w-6 text-cyan-500 fill-cyan-500" />
           <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
             PLN Icon Plus
           </span>
         </div>
-        <nav class="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
+        
+        <nav class="hidden md:flex gap-6 text-sm font-medium text-muted-foreground absolute left-1/2 -translate-x-1/2">
           <a href="#legal-ai" @click.prevent="scrollToSection('legal-ai')" class="hover:text-primary transition-colors">Legal AI</a>
           <a href="#transcription" @click.prevent="scrollToSection('transcription')" class="hover:text-primary transition-colors">Meeting Transcription</a>
         </nav>
-        <div class="flex items-center gap-2">
+        
+        <div class="flex items-center gap-2 z-10">
             <!-- Optional Login/Sign up buttons could go here -->
         </div>
       </div>
@@ -42,10 +44,10 @@ const scrollToSection = (id: string) => {
         </div>
 
         <div class="container relative z-10 px-4 text-center space-y-8">
-          <div class="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-sm font-medium text-cyan-600 dark:text-cyan-400 backdrop-blur-sm mb-4">
+          <!-- <div class="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-sm font-medium text-cyan-600 dark:text-cyan-400 backdrop-blur-sm mb-4">
             <span class="flex h-2 w-2 rounded-full bg-cyan-500 mr-2 animate-ping"></span>
             Efisiensi Operasional Berbasis AI
-          </div>
+          </div> -->
           
           <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight">
             Transformasi Digital <br/>
@@ -65,7 +67,7 @@ const scrollToSection = (id: string) => {
               </router-link>
             </Button>
             <Button variant="outline" size="lg" class="text-lg px-8 h-14 rounded-full border-2 hover:bg-secondary/10 backdrop-blur-sm transition-all" @click="scrollToSection('transcription')">
-              Lihat Transkripsi
+              Lihat Meeting Transcript
             </Button>
           </div>
         </div>
@@ -168,62 +170,71 @@ const scrollToSection = (id: string) => {
 
       <!-- Meeting Transcription Section -->
       <section id="transcription" class="py-24 bg-secondary/5 border-t border-border/50">
-        <div class="container px-4 space-y-12">
-            <div class="flex flex-col md:flex-row justify-between items-end gap-6">
-                <div class="space-y-4 max-w-2xl">
-                     <div class="inline-flex items-center rounded-lg bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300">
-                        <Mic class="w-4 h-4 mr-2" /> Fitur Pendukung
+        <div class="container px-4 space-y-16">
+          <div class="text-center space-y-4">
+             <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 -rotate-3">
+                <Mic class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+             </div>
+            <h2 class="text-4xl font-bold tracking-tight">Meeting Transcription Model</h2>
+            <p class="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Solusi transkripsi rapat bahasa Indonesia real-time yang presisi, dirancang khusus untuk lingkungan korporat PLN.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+             <div class="group relative">
+                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <CardHeader>
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                      <Globe class="w-7 h-7 text-white" />
                     </div>
-                    <h2 class="text-3xl font-bold tracking-tight">Meeting Transcription Model</h2>
-                    <p class="text-muted-foreground text-lg">
-                        Solusi transkripsi rapat bahasa Indonesia real-time yang presisi, dirancang khusus untuk lingkungan korporat PLN.
+                    <CardTitle class="text-xl">Meeting Transcription API</CardTitle>
+                    <CardDescription>Real-time & Accurate</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p class="text-muted-foreground leading-relaxed">
+                      REST API untuk transkripsi real-time dengan diarization (pemisahan pembicara) dan noise cancellation.
                     </p>
-                </div>
-                 <!-- Decorative element or secondary action -->
+                  </CardContent>
+                </Card>
             </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-             <Card class="bg-background/80 hover:bg-background transition-colors border-none shadow-sm hover:shadow-md">
-              <CardHeader>
-                <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-3 text-blue-600">
-                  <Globe class="w-5 h-5" />
-                </div>
-                <CardTitle class="text-lg">Meeting Transcription API</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p class="text-sm text-muted-foreground">
-                  REST API untuk transkripsi real-time dengan diarization (pemisahan pembicara) dan noise cancellation.
-                </p>
-              </CardContent>
-            </Card>
+             <div class="group relative">
+                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <CardHeader>
+                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                      <LayoutDashboard class="w-7 h-7 text-white" />
+                    </div>
+                    <CardTitle class="text-xl">Web Application</CardTitle>
+                    <CardDescription>Manajemen Rekaman Rapat</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p class="text-muted-foreground leading-relaxed">
+                      Dashboard manajemen rekaman rapat yang mudah digunakan untuk unggah, edit, dan arsip hasi rapat.
+                    </p>
+                  </CardContent>
+                </Card>
+            </div>
 
-             <Card class="bg-background/80 hover:bg-background transition-colors border-none shadow-sm hover:shadow-md">
-              <CardHeader>
-                 <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-3 text-blue-600">
-                  <LayoutDashboard class="w-5 h-5" />
-                </div>
-                <CardTitle class="text-lg">Web Application</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p class="text-sm text-muted-foreground">
-                  Dashboard manajemen rekaman rapat yang mudah digunakan untuk unggah, edit, dan arsip hasi rapat.
-                </p>
-              </CardContent>
-            </Card>
-
-             <Card class="bg-background/80 hover:bg-background transition-colors border-none shadow-sm hover:shadow-md">
-              <CardHeader>
-                 <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-3 text-blue-600">
-                  <Code class="w-5 h-5" />
-                </div>
-                <CardTitle class="text-lg">Integration Tools</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p class="text-sm text-muted-foreground">
-                    SDK Siap pakai untuk integrasi Seamless dengan Zoom, Microsoft Teams, dan aplikasi Mobile Android.
-                </p>
-              </CardContent>
-            </Card>
+             <div class="group relative">
+                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <CardHeader>
+                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                      <Code class="w-7 h-7 text-white" />
+                    </div>
+                    <CardTitle class="text-xl">Integration Tools</CardTitle>
+                    <CardDescription>Seamless SDK Integration</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p class="text-muted-foreground leading-relaxed">
+                        SDK Siap pakai untuk integrasi Seamless dengan Zoom, Microsoft Teams, dan aplikasi Mobile Android.
+                    </p>
+                  </CardContent>
+                </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -238,7 +249,7 @@ const scrollToSection = (id: string) => {
                 <span>PLN Icon Plus</span>
             </div>
             <p class="text-sm text-muted-foreground">
-                &copy; 2025 PLN Icon Plus. All rights reserved. Supply & Erect Efisiensi Operasional Berbasis AI.
+                &copy; 2025 PLN Icon Plus. All rights reserved.
             </p>
         </div>
       </div>
