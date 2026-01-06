@@ -1,12 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
 import HomeView from '@/views/HomeView.vue'
+import LandingView from '@/views/LandingView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: '/',
+            name: 'landing',
+            component: LandingView
+        },
+        {
+            path: '/legal',
             component: MainLayout,
             children: [
                 {
