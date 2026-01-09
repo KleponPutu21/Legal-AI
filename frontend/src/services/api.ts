@@ -2,7 +2,6 @@
  * API Service untuk menghubungkan Frontend dengan Backend FastAPI.
  */
 
-// Ambil dari Environment Variable Vercel / Vite
 // Ambil dari Environment Variable Vercel / Vite, atau default ke localhost
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
