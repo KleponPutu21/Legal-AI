@@ -3,6 +3,68 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { ArrowRight, MessageSquare, FileText, Search, Mic, LayoutDashboard, Code, Shield, Globe } from 'lucide-vue-next'
 
+import { computed, ref } from 'vue'
+import { useWindowScroll, useElementBounding, useWindowSize } from '@vueuse/core'
+
+const { y } = useWindowScroll()
+const { height: windowHeight } = useWindowSize()
+
+// Refs for sections
+const legalSectionRef = ref(null)
+const transcriptionSectionRef = ref(null)
+
+// Bounding for sections
+const legalBounds = useElementBounding(legalSectionRef)
+const transcriptionBounds = useElementBounding(transcriptionSectionRef)
+
+// Helper to calculate scroll style
+const getScrollStyle = (bounds: any) => {
+  const top = bounds.top.value
+  const height = bounds.height.value
+  const wh = windowHeight.value
+  
+  // Entrance: element coming from bottom
+  // Start fading in when top < wh (enters viewport)
+  // Fully visible when top < wh * 0.7 (30% up the screen)
+  const entranceOpacity = Math.max(0, Math.min(1, (wh - top) / (wh * 0.3)))
+  
+  // Exit: element going rapidly to top
+  // Start fading out when top < wh * 0.1 (near top)
+  // Fully invisible when top < -height * 0.2
+  // NOTE: User requested "Fade out when user scroll halaman ke bawah" (scrolling down -> element moves up).
+  // AND "Fade in kembali" (scrolling up -> element moves down).
+  // The logic below handles this automatically based on position.
+  
+  let opacity = entranceOpacity
+  
+  // Calculate exit opacity (fading out as it goes up off screen)
+  if (top < wh * 0.2) {
+      const exitOpacity = Math.max(0, Math.min(1, (top + height * 0.4) / (height * 0.4)))
+      opacity = Math.min(opacity, exitOpacity)
+  }
+  
+  const scale = 0.9 + (0.1 * opacity) // Scale from 0.9 to 1 based on opacity
+  
+  return {
+    opacity,
+    transform: `scale(${scale})`,
+    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out'
+  }
+}
+
+const heroStyle = computed(() => {
+  const opacity = Math.max(0, 1 - y.value / 400)
+  const scale = Math.max(0.9, 1 - y.value / 3000) // Subtle shrinking effect
+  return {
+    opacity,
+    transform: `scale(${scale})`,
+    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out'
+  }
+})
+
+const legalSectionStyle = computed(() => getScrollStyle(legalBounds))
+const transcriptionSectionStyle = computed(() => getScrollStyle(transcriptionBounds))
+
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
@@ -43,24 +105,24 @@ const scrollToSection = (id: string) => {
              <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl opacity-50 animate-pulse delay-1000"></div>
         </div>
 
-        <div class="container relative z-10 px-4 text-center space-y-8">
+        <div class="container relative z-10 px-4 text-center space-y-8" :style="heroStyle">
           <!-- <div class="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-sm font-medium text-cyan-600 dark:text-cyan-400 backdrop-blur-sm mb-4">
             <span class="flex h-2 w-2 rounded-full bg-cyan-500 mr-2 animate-ping"></span>
             Efisiensi Operasional Berbasis AI
           </div> -->
           
-          <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight">
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight animate-in slide-in-from-bottom-8 fade-in duration-1000">
             Transformasi Digital <br/>
             <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-600">
                PLN Group
             </span>
           </h1>
           
-          <p class="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p class="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-in slide-in-from-bottom-8 fade-in duration-1000 fill-mode-forwards">
             Menggabungkan kekuatan Finetuning LLM Domain Hukum dan Meeting Transcription Model untuk akselerasi kinerja korporat.
           </p>
           
-          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
+          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8 animate-in slide-in-from-bottom-8 fade-in duration-1000 fill-mode-forwards">
             <Button size="lg" class="text-lg px-8 h-14 rounded-full shadow-lg shadow-cyan-500/20 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 transition-all transform hover:scale-105" as-child>
               <router-link to="/legal">
                 Jelajahi Legal AI
@@ -74,8 +136,8 @@ const scrollToSection = (id: string) => {
       </section>
 
       <!-- Legal AI Section -->
-      <section id="legal-ai" class="py-24 bg-gradient-to-b from-background to-cyan-50/50 dark:to-cyan-950/20">
-        <div class="container px-4 space-y-16">
+      <section id="legal-ai" class="py-24 bg-gradient-to-b from-background to-cyan-50/50 dark:to-cyan-950/20" ref="legalSectionRef">
+        <div class="container px-4 space-y-16" :style="legalSectionStyle">
           <div class="text-center space-y-4">
              <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
                 <Shield class="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
@@ -169,8 +231,8 @@ const scrollToSection = (id: string) => {
       </section>
 
       <!-- Meeting Transcription Section -->
-      <section id="transcription" class="py-24 bg-secondary/5 border-t border-border/50">
-        <div class="container px-4 space-y-16">
+      <section id="transcription" class="py-24 bg-secondary/5 border-t border-border/50" ref="transcriptionSectionRef">
+        <div class="container px-4 space-y-16" :style="transcriptionSectionStyle">
           <div class="text-center space-y-4">
              <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 -rotate-3">
                 <Mic class="w-8 h-8 text-blue-600 dark:text-blue-400" />
