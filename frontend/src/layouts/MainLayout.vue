@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Scale, MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-vue-next'
+import { MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-vue-next'
 
 const isSidebarOpen = ref(true)
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
-import { ArrowRight, MessageSquare, FileText, Search, Mic, LayoutDashboard, Code, Zap, Shield, Globe } from 'lucide-vue-next'
+import { ArrowRight, MessageSquare, FileText, Search, Mic, LayoutDashboard, Code, Shield, Globe } from 'lucide-vue-next'
 
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
