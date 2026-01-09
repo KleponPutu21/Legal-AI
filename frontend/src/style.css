@@ -4,10 +4,11 @@
 
 @layer base {
   :root {
-    /* #e7f6f9 - Light Cyan Background */
-    --background: 190 60% 94%;
+    /* PLN IconPlus Palette */
+    /* #e7f6f9 - Background */
+    --background: 190 60% 94%; 
+    /* #125d72 - Dark Teal (Primary Text) */
     --foreground: 193 73% 26%;
-    /* Dark Teal for text */
 
     --card: 0 0% 100%;
     --card-foreground: 193 73% 26%;
@@ -15,29 +16,30 @@
     --popover: 0 0% 100%;
     --popover-foreground: 193 73% 26%;
 
-    /* #125d72 - Dark Teal Primary */
+    /* #125d72 - Primary */
     --primary: 193 73% 26%;
     --primary-foreground: 190 60% 94%;
 
-    /* #14a2ba - Cyan Secondary */
+    /* #14a2ba - Secondary/Cyan */
     --secondary: 189 81% 40%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 189 81% 90%;
-    /* Lighter version of secondary */
+    /* #d9d9d9 - Muted */
+    --muted: 0 0% 85%;
     --muted-foreground: 193 73% 40%;
 
-    --accent: 189 81% 40%;
-    --accent-foreground: 0 0% 100%;
+    /* #efe62f - Accent/Yellow */
+    --accent: 57 86% 56%;
+    --accent-foreground: 193 73% 26%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 193 73% 20%;
-    --input: 193 73% 20%;
-    --ring: 193 73% 26%;
+    --border: 189 81% 40%; /* Using secondary for borders for visibility */
+    --input: 193 73% 26%;
+    --ring: 189 81% 40%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Slightly more rounded for modern feel */
   }
 
   .dark {

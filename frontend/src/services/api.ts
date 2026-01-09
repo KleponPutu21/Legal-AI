@@ -3,14 +3,8 @@
  */
 
 // Ambil dari Environment Variable Vercel / Vite
-const API_URL = import.meta.env.VITE_API_BASE_URL;
-
-/**
- * Validasi agar error langsung kelihatan kalau env belum diset
- */
-if (!API_URL) {
-    throw new Error("VITE_API_BASE_URL is not defined");
-}
+// Ambil dari Environment Variable Vercel / Vite, atau default ke localhost
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 // Tipe data untuk pesan chat
 export interface ChatMessage {
@@ -42,7 +36,7 @@ export async function sendMessage(message: string): Promise<string> {
         return data.response;
     } catch (error) {
         console.error('API Error:', error);
-        throw error;
+        throw new Error('Gagal terhubung ke server. Pastikan backend berjalan di port 8000.');
     }
 }
 

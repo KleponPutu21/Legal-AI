@@ -5,7 +5,7 @@ import { ArrowRight, MessageSquare, FileText, Search } from 'lucide-vue-next'
 </script>
 
 <template>
-  <div class="container py-8 space-y-8">
+  <div class="container py-8 px-4 lg:px-6 space-y-8">
     <!-- Hero Section -->
     <section class="text-center space-y-4 py-12 md:py-24">
       <h1 class="text-4xl md:text-6xl font-bold tracking-tighter">

@@ -41,7 +41,7 @@ const handleAnalyze = async () => {
 </script>
 
 <template>
-  <div class="container py-8 max-w-3xl">
+  <div class="container py-8 px-4 lg:px-6 max-w-3xl">
     <h1 class="text-3xl font-bold mb-6">Analisa Dokumen Hukum</h1>
     
     <div class="grid gap-6">

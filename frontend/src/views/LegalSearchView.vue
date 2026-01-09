@@ -30,7 +30,7 @@ const handleSearch = async () => {
 </script>
 
 <template>
-  <div class="container py-8 max-w-4xl">
+  <div class="container py-8 px-4 lg:px-6 max-w-4xl">
     <div class="text-center mb-10 space-y-4">
       <h1 class="text-3xl font-bold">Pencarian Legal & Regulasi</h1>
       <p class="text-muted-foreground">Temukan undang-undang, putusan pengadilan, dan dokumen hukum Indonesia.</p>
