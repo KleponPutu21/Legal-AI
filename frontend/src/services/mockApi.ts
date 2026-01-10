@@ -56,14 +56,17 @@ export async function analyzeDocument(file: File): Promise<string> {
     return "Maaf, layanan analisa dokumen saat ini sedang tidak tersedia (Out of service).";
 }
 
+import type { SearchFilters } from './api'
+
 /**
  * Mencari data legal (Simulasi)
  * @param query Kata kunci pencarian
+ * @param filters Filter pencarian
  * @returns Hasil pencarian
  */
-export async function searchLegal(query: string): Promise<any[]> {
+export async function searchLegal(query: string, filters?: SearchFilters): Promise<any[]> {
     // Simulasi penggunaan parameter
-    console.log(`Searching for query: ${query}`);
+    console.log(`Searching for query: ${query}`, filters);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Kembalikan array kosong atau pesan error dalam bentuk item

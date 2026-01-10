@@ -65,17 +65,25 @@ export async function analyzeDocument(file: File): Promise<string> {
     }
 }
 
+export interface SearchFilters {
+    type?: string;        // Undang-undang, PP, Permen, dll
+    jurisdiction?: string; // Nasional, Provinsi, Kota
+    status?: string;      // Berlaku, Dicabut
+    year?: string;        // Tahun
+    number?: string;      // Nomor
+}
+
 /**
  * Pencarian legal
  */
-export async function searchLegal(query: string): Promise<any[]> {
+export async function searchLegal(query: string, filters?: SearchFilters): Promise<any[]> {
     try {
         const response = await fetch(`${API_URL}/api/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query }),
+            body: JSON.stringify({ query, filters }),
         });
 
         if (!response.ok) {
