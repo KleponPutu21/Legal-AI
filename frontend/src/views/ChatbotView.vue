@@ -179,9 +179,9 @@ const handleKeydown = (e: KeyboardEvent) => {
                  <Button 
                   type="submit" 
                   :disabled="isLoading || !inputMessage.trim()"
-                  class="w-12 h-12 rounded-full p-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] transition-all duration-300 shadow-lg shadow-[#125d72]/20 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 flex-shrink-0"
+                  class="w-12 h-12 rounded-full p-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] transition-all duration-300 shadow-lg shadow-[#125d72]/20 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 flex-shrink-0 flex items-center justify-center"
                 >
-                  <Send class="w-5 h-5 text-white ml-1" />
+                  <Send class="w-5 h-5 text-white" />
                   <span class="sr-only">Kirim</span>
                 </Button>
               </div>

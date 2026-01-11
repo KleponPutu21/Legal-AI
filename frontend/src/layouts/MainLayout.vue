@@ -11,7 +11,7 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background font-sans antialiased flex transition-colors duration-300">
+  <div class="h-screen overflow-hidden bg-background font-sans antialiased flex transition-colors duration-300">
     <!-- Sidebar -->
     <aside 
       :class="[
@@ -48,8 +48,7 @@ const toggleSidebar = () => {
           <router-link 
             to="/legal" 
             :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20', !isSidebarOpen && 'justify-center']"
-            active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
-            exact-active-class="bg-[#14a2ba]/30 text-[#efe62f]"
+            exact-active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
             :title="!isSidebarOpen ? 'Beranda' : ''"
           >
             <Home class="h-4 w-4 shrink-0" />
