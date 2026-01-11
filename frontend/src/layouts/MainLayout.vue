@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-vue-next'
 
-const isSidebarOpen = ref(true)
+const isSidebarOpen = ref(false)
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
