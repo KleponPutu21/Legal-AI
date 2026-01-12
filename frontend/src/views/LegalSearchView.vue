@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { searchLegal, type SearchFilters } from '@/services/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Search, Gavel, Filter, X, ChevronDown, Check } from 'lucide-vue-next'
 
@@ -25,6 +26,19 @@ const filters = ref<SearchFilters>({
 const typeOptions = ['Undang-undang', 'Peraturan Pemerintah', 'Peraturan Presiden', 'Peraturan Menteri', 'Keputusan Menteri', 'Peraturan Daerah']
 const jurisdictionOptions = ['Nasional', 'Provinsi', 'Kota/Kabupaten', 'Internasional']
 const statusOptions = ['Berlaku', 'Dicabut', 'Diubah Sebagian', 'Tidak Berlaku']
+
+// Recommended Keywords
+const recommendedKeywords = [
+  'Cipta Kerja', 'Korupsi', 'Lingkungan Hidup', 'Pertambangan', 
+  'Ketenagakerjaan', 'Informasi & Transaksi Elektronik'
+]
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+    handleSearch()
+  }
+}
 
 const handleSearch = async () => {
   if (!query.value.trim() && !hasSearched.value) return
@@ -90,15 +104,16 @@ const clearFilters = () => {
       <div class="space-y-4 mb-6 relative z-30 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <!-- Search Bar -->
         <div class="flex gap-2">
-            <div class="relative flex-1 group">
+            <div class="relative flex-1 group min-w-0">
               <div class="absolute inset-0 bg-white/40 rounded-xl blur-md transform translate-y-2 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
               <div class="relative">
-                 <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#125d72]/50" />
-                 <Input 
+                 <Textarea 
                    v-model="query" 
-                   placeholder="Kata kunci (contoh: 'Cipta Kerja', 'Korupsi')" 
-                   class="pl-12 h-12 md:h-14 rounded-xl bg-white/80 backdrop-blur-md border-[#125d72]/10 focus:border-[#14a2ba] focus:ring-[#14a2ba]/20 text-lg shadow-sm transition-all duration-300"
-                   @keyup.enter="handleSearch"
+                   placeholder="Cari dokumen & peraturan..." 
+                   class="pl-4 py-3 min-h-[56px] rounded-xl bg-white/80 backdrop-blur-md border-[#125d72]/10 focus:border-[#14a2ba] focus:ring-[#14a2ba]/20 text-lg shadow-sm transition-all duration-300 resize-none"
+                   @keydown.enter="handleKeydown"
+                   rows="1"
+                   style="field-sizing: content; max-height: 150px;"
                  />
               </div>
             </div>
@@ -125,6 +140,19 @@ const clearFilters = () => {
             >
                 <Filter class="w-5 h-5" />
             </Button>
+        </div>
+        
+        <!-- Recommended Keywords (Responsive Chips) -->
+        <div class="flex flex-wrap gap-2 mt-3 px-1">
+           <span class="text-xs font-semibold text-[#125d72]/60 uppercase tracking-wider py-1.5 mr-1">Contoh:</span>
+           <button 
+             v-for="keyword in recommendedKeywords" 
+             :key="keyword"
+             @click="query = keyword; handleSearch()"
+             class="px-3 py-1 rounded-full text-xs font-medium bg-white/50 border border-[#125d72]/10 text-[#125d72] hover:bg-[#14a2ba] hover:text-white hover:border-[#14a2ba] transition-all duration-200"
+           >
+             {{ keyword }}
+           </button>
         </div>
 
         <!-- Filters Panel (Collapsible) -->
