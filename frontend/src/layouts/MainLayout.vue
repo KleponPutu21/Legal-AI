@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import { MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-vue-next'
+import { MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next'
 
 const isSidebarOpen = ref(false)
 
@@ -11,15 +11,23 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-  <div class="h-screen overflow-hidden bg-background font-sans antialiased flex transition-colors duration-300">
+  <div class="h-screen overflow-hidden bg-background font-sans antialiased flex transition-colors duration-300 relative">
+    <!-- Mobile Backdrop -->
+    <div 
+      v-if="isSidebarOpen" 
+      class="fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300"
+      @click="toggleSidebar"
+    />
+
     <!-- Sidebar -->
     <aside 
       :class="[
         'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out overflow-hidden border-[#14a2ba]/30 z-40',
+        'fixed inset-y-0 left-0 h-full md:relative md:h-auto',
         isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
       ]"
     >
-      <div class="h-16 flex items-center border-b border-[#14a2ba]/30 px-4 whitespace-nowrap overflow-hidden relative group">
+      <div class="h-16 flex items-center border-b border-[#14a2ba]/30 px-4 whitespace-nowrap overflow-hidden relative group shrink-0">
         <router-link to="/legal" class="flex items-center gap-2 font-semibold text-white relative z-10">
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="h-8 w-auto shrink-0 transition-transform duration-300" :class="!isSidebarOpen && 'group-hover:scale-110'" />
           <span :class="['transition-opacity duration-300', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
@@ -97,6 +105,23 @@ const toggleSidebar = () => {
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col min-w-0">
+      <!-- Mobile Header -->
+      <header class="h-16 flex items-center gap-4 bg-white px-4 md:hidden border-b border-[#14a2ba]/30 shrink-0 shadow-md relative z-10 w-full">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          @click="toggleSidebar" 
+          class="text-[#125d72] hover:bg-[#14a2ba]/10 hover:text-[#125d72]"
+        >
+          <Menu class="h-6 w-6" />
+          <span class="sr-only">Toggle Sidebar</span>
+        </Button>
+        <div class="flex items-center gap-2 font-semibold text-[#125d72]">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="h-8 w-auto shrink-0" />
+          <span>PLN Legal AI</span>
+        </div>
+      </header>
+
       <main class="flex-1 overflow-auto bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30">
         <router-view />
       </main>
