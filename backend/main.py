@@ -110,10 +110,10 @@ async def search_endpoint(request: SearchRequest):
     try:
         # Mocking search with LLM generation for now (Prototype phase)
         # In real app, this would query a Vector DB or Search Engine
-        prompt = f"Berikan daftar 3-5 peraturan atau undang-undang di Indonesia yang relevan dengan topik '{request.query}'. Format hasil sebagai daftar JSON dengan field 'title' dan 'description'."
+        prompt = f"Berikan daftar 3-5 peraturan atau undang-undang di Indonesia yang relevan dengan topik '{request.query}'. Berikan respons HANYA dalam format JSON Array raw. Jangan gunakan markdown block ```json. Setiap item harus memiliki field 'title' (Nama Peraturan), 'description' (Penjelasan singkat), dan 'type' (Misal: 'uu', 'pp', 'permen')."
         
         messages = [
-            {"role": "system", "content": "Anda adalah mesin pencari hukum. Berikan hasil yang relevan."},
+            {"role": "system", "content": "Anda adalah mesin pencari hukum. Keluarkan hasil HANYA dalam format JSON valid tanpa teks tambahan."},
             {"role": "user", "content": prompt}
         ]
         
@@ -124,19 +124,38 @@ async def search_endpoint(request: SearchRequest):
             temperature=0.7
         )
         
-        # Karena kita minta LLM, kita kembalikan raw text dulu untuk diparsing di frontend atau ditampilkan langsung
-        # Namun agar sesuai struktur frontend sebelumnya, kita kembalikan list of objects
-        # Disini kita simplifikasi: kita minta LLM jelaskan saja, nanti frontend menampilkan textnya.
-        # TAPI, frontend view mengharapkan array of objects {id, title, description}.
-        # Kita ubah backend return format TEXT saja, dan frontend adaptasi, 
-        # ATAU kita parsing output LLM.
-        # Untuk kestabilan prototipe ini, kita minta LLM generate text, lalu kita bungkus jadi 1 item result.
+        # Cleaning formatting if exists
+        content = response.choices[0].message.content.strip()
         
+        # Try to parse JSON from the response
+        import json
+        import re
+        
+        try:
+            # Remove markdown code blocks if present
+            clean_content = re.sub(r'```json\s*|\s*```', '', content)
+            parsed_results = json.loads(clean_content)
+            
+            if isinstance(parsed_results, list):
+                # Ensure each item has an id
+                for idx, item in enumerate(parsed_results):
+                    if 'id' not in item:
+                        item['id'] = f"ai-result-{idx}"
+                    # Ensure type exists for badge
+                    if 'type' not in item:
+                         item['type'] = 'Regulasi'
+                return parsed_results
+                
+        except json.JSONDecodeError:
+            print("Failed to parse LLM JSON response")
+            # Fallback to text description if parsing fails
+            pass
+            
         return [
             {
                 "id": "ai-generated",
                 "title": f"Hasil Pencarian AI untuk '{request.query}'",
-                "description": response.choices[0].message.content
+                "description": content
             }
         ]
 

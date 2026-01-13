@@ -6,6 +6,18 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Search, Gavel, Filter, X, ChevronDown, Check } from 'lucide-vue-next'
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  breaks: true,
+  typographer: true
+})
+
+const renderDescription = (content: string) => {
+  return md.render(content)
+}
 
 const query = ref('')
 const isLoading = ref(false)
@@ -69,6 +81,16 @@ const clearFilters = () => {
     status: '',
     year: '',
     number: ''
+  }
+}
+
+const expandedItems = ref(new Set<string>())
+
+const toggleExpand = (id: string) => {
+  if (expandedItems.value.has(id)) {
+    expandedItems.value.delete(id)
+  } else {
+    expandedItems.value.add(id)
   }
 }
 </script>
@@ -257,6 +279,7 @@ const clearFilters = () => {
                   :key="item.id" 
                   class="group bg-white/70 hover:bg-white/95 backdrop-blur-sm border border-white/60 p-6 rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer animate-in fade-in slide-in-from-bottom-2 fill-mode-forwards"
                   :style="{ animationDelay: `${index * 50}ms` }"
+                  @click="toggleExpand(item.id)"
                 >
                    <div class="flex items-start gap-4">
                       <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center flex-shrink-0 shadow-md shadow-[#125d72]/10 group-hover:scale-110 transition-transform duration-300">
@@ -274,14 +297,19 @@ const clearFilters = () => {
                          <h3 class="text-lg md:text-xl font-bold text-[#125d72] leading-tight group-hover:text-[#14a2ba] transition-colors">
                             {{ item.title }}
                          </h3>
-                         <p class="text-sm md:text-base text-[#125d72]/70 line-clamp-2 leading-relaxed">
-                            {{ item.description }}
-                         </p>
+                         <div 
+                            class="text-sm md:text-base text-[#125d72]/70 leading-relaxed prose prose-sm max-w-none prose-p:my-0 prose-headings:my-0 prose-ul:my-0 prose-ol:my-0 text-left transition-all duration-300"
+                            :class="expandedItems.has(item.id) ? '' : 'line-clamp-2'"
+                            v-html="renderDescription(item.description)"
+                         >
+                         </div>
                       </div>
-                      <div class="self-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300">
-                         <ScrollArea class="w-8 h-8 flex items-center justify-center rounded-full bg-[#125d72]/5 text-[#125d72]">
-                           < ChevronDown class="w-5 h-5 -rotate-90" />
-                         </ScrollArea>
+                      <div class="self-center">
+                         <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[#125d72]/5 text-[#125d72] transition-transform duration-300"
+                             :class="expandedItems.has(item.id) ? 'rotate-0' : '-rotate-90'"
+                         >
+                           <ChevronDown class="w-5 h-5" />
+                         </div>
                       </div>
                    </div>
                 </div>
