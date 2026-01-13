@@ -5,6 +5,18 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, User, Bot } from 'lucide-vue-next'
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  breaks: true,
+  typographer: true
+})
+
+const renderMessage = (content: string) => {
+  return md.render(content)
+}
 
 const messages = ref<ChatMessage[]>([
   {
@@ -126,16 +138,17 @@ const handleKeydown = (e: KeyboardEvent) => {
 
                 <!-- Message Bubble -->
                 <div class="flex flex-col gap-1">
-                  <div 
-                    :class="[
-                      'p-5 shadow-sm text-sm md:text-base leading-relaxed relative group transition-all duration-300',
-                      msg.role === 'user' 
-                        ? 'bg-gradient-to-br from-[#125d72] to-[#14a2ba] text-white rounded-[1.5rem] rounded-tr-sm shadow-[#125d72]/10' 
-                        : 'bg-white/90 backdrop-blur-sm border border-white/60 text-[#125d72] rounded-[1.5rem] rounded-tl-sm shadow-sm'
-                    ]"
-                  >
-                    {{ msg.content }}
-                  </div>
+                    <div 
+                      :class="[
+                        'p-5 shadow-sm text-sm md:text-base leading-relaxed relative group transition-all duration-300',
+                        'prose prose-sm max-w-none break-words',
+                        msg.role === 'user' 
+                          ? 'bg-gradient-to-br from-[#125d72] to-[#14a2ba] text-white rounded-[1.5rem] rounded-tr-sm shadow-[#125d72]/10 prose-invert prose-p:text-white prose-headings:text-white prose-strong:text-white prose-ul:text-white prose-ol:text-white' 
+                          : 'bg-white/90 backdrop-blur-sm border border-white/60 text-[#125d72] rounded-[1.5rem] rounded-tl-sm shadow-sm prose-p:text-[#125d72] prose-headings:text-[#125d72] prose-strong:text-[#125d72] prose-ul:text-[#125d72] prose-ol:text-[#125d72]'
+                      ]"
+                      v-html="renderMessage(msg.content)"
+                    >
+                    </div>
                   <span class="text-[10px] text-[#125d72]/50 px-2 font-medium" :class="msg.role === 'user' ? 'text-right' : 'text-left'">
                     {{ msg.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}
                   </span>
