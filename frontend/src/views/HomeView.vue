@@ -36,7 +36,7 @@ import { ArrowRight, MessageSquare, FileText, Search, Shield } from 'lucide-vue-
       </section>
 
       <!-- Features Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <!-- Chatbot Card -->
         <Card class="flex flex-col border-white/60 bg-white/60 backdrop-blur-sm shadow-xl shadow-[#125d72]/5 hover:shadow-2xl hover:shadow-[#125d72]/10 transition-all duration-500 hover:-translate-y-1 group">
           <CardHeader>
