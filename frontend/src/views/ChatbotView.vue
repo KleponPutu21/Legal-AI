@@ -100,7 +100,7 @@ const handleKeydown = (e: KeyboardEvent) => {
     <main class="flex-1 w-full max-w-4xl mx-auto flex flex-col relative z-10 overflow-hidden">
       
       <ScrollArea class="flex-1 px-4 md:px-0">
-        <div class="space-y-6 pb-32 pt-4">
+        <div class="space-y-6 pb-4 pt-4">
           <template v-for="(msg, index) in messages" :key="msg.id">
             <div 
               :class="[
@@ -160,8 +160,8 @@ const handleKeydown = (e: KeyboardEvent) => {
         </div>
       </ScrollArea>
 
-      <!-- Floating Input Area -->
-      <div class="absolute bottom-6 left-0 right-0 px-4 md:px-8 z-30">
+      <!-- Fixed Input Area -->
+      <div class="w-full px-4 md:px-8 pb-6 pt-2 z-30">
         <div class="max-w-4xl mx-auto">
           <form @submit.prevent="handleSendMessage" class="relative group">
             <div class="absolute inset-0 bg-white/40 rounded-[2rem] blur-md transform translate-y-2"></div>
