@@ -126,7 +126,7 @@ onClickOutside(profileMenuRef, (event) => {
         <div 
           v-if="isProfileMenuOpen"
           ref="profileMenuRef"
-          class="absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-[#14a2ba]/30 bg-[#125d72] p-1 shadow-xl z-50 text-[#e7f6f9]"
+          class="absolute bottom-full left-2 mb-2 w-56 rounded-lg border border-[#14a2ba]/30 bg-[#082f3a] p-1 shadow-[0_0_15px_rgba(0,0,0,0.3)] z-50 text-[#e7f6f9]"
         >
            <div class="px-3 py-2 text-sm font-semibold border-b border-[#14a2ba]/20 mb-1">
              User
