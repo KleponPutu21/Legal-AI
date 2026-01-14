@@ -152,79 +152,79 @@ const scrollToSection = (id: string) => {
             <!-- Feature 1 -->
             <div class="group relative">
                 <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                      <MessageSquare class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Legal AI Assistant</CardTitle>
-                    <CardDescription>Konsultasi Hukum Internal</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                      Chatbot interaktif untuk konsultasi hukum instan. Memberikan jawaban presisi berdasarkan database regulasi PLN dan hukum Indonesia.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                     <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform" as-child>
-                      <router-link to="/legal/chatbot">
-                        Mulai Konsultasi <ArrowRight class="ml-2 w-4 h-4" />
-                      </router-link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <router-link to="/legal/chatbot" class="block h-full">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
+                        <MessageSquare class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Legal AI Assistant</CardTitle>
+                      <CardDescription>Konsultasi Hukum Internal</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                        Chatbot interaktif untuk konsultasi hukum instan. Memberikan jawaban presisi berdasarkan database regulasi PLN dan hukum Indonesia.
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                       <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                          Mulai Konsultasi <ArrowRight class="ml-2 w-4 h-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </router-link>
             </div>
 
             <!-- Feature 2 -->
              <div class="group relative">
                 <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                      <FileText class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Document Analysis Tool</CardTitle>
-                    <CardDescription>Otomasi Analisis Kontrak</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                      Soroti poin krusial dalam kontrak secara otomatis. Hemat waktu peninjauan dokumen dengan deteksi risiko berbasis AI.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform" as-child>
-                      <router-link to="/legal/document-analysis">
-                        Analisis Dokumen <ArrowRight class="ml-2 w-4 h-4" />
-                      </router-link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <router-link to="/legal/document-analysis" class="block h-full">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
+                        <FileText class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Document Analysis Tool</CardTitle>
+                      <CardDescription>Otomasi Analisis Kontrak</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                        Soroti poin krusial dalam kontrak secara otomatis. Hemat waktu peninjauan dokumen dengan deteksi risiko berbasis AI.
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                          Analisis Dokumen <ArrowRight class="ml-2 w-4 h-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </router-link>
             </div>
 
             <!-- Feature 3 -->
              <div class="group relative">
                 <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                      <Search class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Legal Search Engine</CardTitle>
-                    <CardDescription>Pencarian Semantik Cerdas</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                      Temukan preseden dan regulasi bukan hanya berdasarkan kata kunci, tetapi makna dan konteks hukum yang relevan.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform" as-child>
-                      <router-link to="/legal/legal-search">
-                        Cari Regulasi <ArrowRight class="ml-2 w-4 h-4" />
-                      </router-link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <router-link to="/legal/legal-search" class="block h-full">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
+                        <Search class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Legal Search Engine</CardTitle>
+                      <CardDescription>Pencarian Semantik Cerdas</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                        Temukan preseden dan regulasi bukan hanya berdasarkan kata kunci, tetapi makna dan konteks hukum yang relevan.
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                          Cari Regulasi <ArrowRight class="ml-2 w-4 h-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </router-link>
             </div>
           </div>
         </div>
@@ -246,56 +246,62 @@ const scrollToSection = (id: string) => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                      <Globe class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Meeting Transcription API</CardTitle>
-                    <CardDescription>Real-time & Accurate</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                      REST API untuk transkripsi real-time dengan diarization (pemisahan pembicara) dan noise cancellation.
-                    </p>
-                  </CardContent>
-                </Card>
+                 <router-link to="/transcription/api" class="block h-full">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                        <Globe class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Meeting Transcription API</CardTitle>
+                      <CardDescription>Real-time & Accurate</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                        REST API untuk transkripsi real-time dengan diarization (pemisahan pembicara) dan noise cancellation.
+                      </p>
+                    </CardContent>
+                  </Card>
+                 </router-link>
             </div>
 
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                      <LayoutDashboard class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Web Application</CardTitle>
-                    <CardDescription>Manajemen Rekaman Rapat</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                      Dashboard manajemen rekaman rapat yang mudah digunakan untuk unggah, edit, dan arsip hasi rapat.
-                    </p>
-                  </CardContent>
-                </Card>
+                 <router-link to="/transcription/web" class="block h-full">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                        <LayoutDashboard class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Web Application</CardTitle>
+                      <CardDescription>Manajemen Rekaman Rapat</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                        Dashboard manajemen rekaman rapat yang mudah digunakan untuk unggah, edit, dan arsip hasi rapat.
+                      </p>
+                    </CardContent>
+                  </Card>
+                 </router-link>
             </div>
 
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                  <CardHeader>
-                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                      <Code class="w-7 h-7 text-white" />
-                    </div>
-                    <CardTitle class="text-xl">Integration Tools</CardTitle>
-                    <CardDescription>Seamless SDK Integration</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-muted-foreground leading-relaxed">
-                        SDK Siap pakai untuk integrasi Seamless dengan Zoom, Microsoft Teams, dan aplikasi Mobile Android.
-                    </p>
-                  </CardContent>
-                </Card>
+                 <router-link to="/transcription/integration" class="block h-full">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                    <CardHeader>
+                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
+                        <Code class="w-7 h-7 text-white" />
+                      </div>
+                      <CardTitle class="text-xl">Integration Tools</CardTitle>
+                      <CardDescription>Seamless SDK Integration</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p class="text-muted-foreground leading-relaxed">
+                          SDK Siap pakai untuk integrasi Seamless dengan Zoom, Microsoft Teams, dan aplikasi Mobile Android.
+                      </p>
+                    </CardContent>
+                  </Card>
+                 </router-link>
             </div>
           </div>
         </div>
