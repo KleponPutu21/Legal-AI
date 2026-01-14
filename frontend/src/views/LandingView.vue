@@ -74,7 +74,7 @@ const scrollToSection = (id: string) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background font-sans">
+  <div class="min-h-screen bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30 font-sans">
     <!-- Header -->
     <header class="fixed top-0 w-full z-50 border-b border-white/10 bg-background/80 backdrop-blur-md">
       <div class="container flex h-16 items-center justify-between px-4 relative">
@@ -101,8 +101,9 @@ const scrollToSection = (id: string) => {
       <section class="relative py-32 md:py-48 overflow-hidden">
         <!-- Background Gradients -->
         <div class="absolute inset-0 z-0">
-             <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl opacity-50 animate-pulse"></div>
-             <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl opacity-50 animate-pulse delay-1000"></div>
+             <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#14a2ba]/20 rounded-full blur-3xl opacity-50 animate-pulse"></div>
+             <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#125d72]/20 rounded-full blur-3xl opacity-50 animate-pulse delay-1000"></div>
+             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#efe62f]/10 rounded-full blur-3xl opacity-40 animate-pulse delay-500"></div>
         </div>
 
         <div class="container relative z-10 px-4 text-center space-y-8" :style="heroStyle">
@@ -113,7 +114,7 @@ const scrollToSection = (id: string) => {
           
       <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight animate-in slide-in-from-bottom-8 fade-in duration-1000">
             Transformasi Digital <br/>
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-600">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#125d72] via-[#14a2ba] to-[#efe62f]">
                PLN Group
             </span>
           </h1>
@@ -123,7 +124,7 @@ const scrollToSection = (id: string) => {
           </p>
           
           <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8 animate-in slide-in-from-bottom-8 fade-in duration-1000 fill-mode-forwards">
-            <Button size="lg" class="text-lg px-8 h-14 rounded-full shadow-lg shadow-cyan-500/20 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 transition-all transform hover:scale-105" as-child>
+            <Button size="lg" class="text-lg px-8 h-14 rounded-full shadow-lg shadow-[#125d72]/20 bg-[#125d72] hover:bg-[#14a2ba] text-[#e7f6f9] hover:text-[#efe62f] transition-all transform hover:scale-105" as-child>
               <router-link to="/legal">
                 Jelajahi Legal AI
               </router-link>
@@ -136,11 +137,11 @@ const scrollToSection = (id: string) => {
       </section>
 
       <!-- Legal AI Section -->
-      <section id="legal-ai" class="py-24 bg-gradient-to-b from-background to-cyan-50/50 dark:to-cyan-950/20" ref="legalSectionRef">
+      <section id="legal-ai" class="py-24 bg-[#e7f6f9]/50" ref="legalSectionRef">
         <div class="container px-4 space-y-16" :style="legalSectionStyle">
           <div class="text-center space-y-4">
-             <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Shield class="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
+             <div class="w-16 h-16 bg-[#14a2ba]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Shield class="w-8 h-8 text-[#125d72]" />
              </div>
             <h2 class="text-4xl font-bold tracking-tight">Finetuning LLM Domain Hukum</h2>
             <p class="text-muted-foreground text-lg max-w-3xl mx-auto">
@@ -151,12 +152,12 @@ const scrollToSection = (id: string) => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Feature 1 -->
             <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                 <router-link to="/legal/chatbot" class="block h-full">
-                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                        <MessageSquare class="w-7 h-7 text-white" />
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <MessageSquare class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Legal AI Assistant</CardTitle>
                       <CardDescription>Konsultasi Hukum Internal</CardDescription>
@@ -167,7 +168,7 @@ const scrollToSection = (id: string) => {
                       </p>
                     </CardContent>
                     <CardFooter>
-                       <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                       <Button variant="link" class="p-0 text-[#125d72] group-hover:translate-x-1 transition-transform">
                           Mulai Konsultasi <ArrowRight class="ml-2 w-4 h-4" />
                       </Button>
                     </CardFooter>
@@ -177,12 +178,12 @@ const scrollToSection = (id: string) => {
 
             <!-- Feature 2 -->
              <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                 <router-link to="/legal/document-analysis" class="block h-full">
-                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                        <FileText class="w-7 h-7 text-white" />
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <FileText class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Document Analysis Tool</CardTitle>
                       <CardDescription>Otomasi Analisis Kontrak</CardDescription>
@@ -193,7 +194,7 @@ const scrollToSection = (id: string) => {
                       </p>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                      <Button variant="link" class="p-0 text-[#125d72] group-hover:translate-x-1 transition-transform">
                           Analisis Dokumen <ArrowRight class="ml-2 w-4 h-4" />
                       </Button>
                     </CardFooter>
@@ -203,12 +204,12 @@ const scrollToSection = (id: string) => {
 
             <!-- Feature 3 -->
              <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                 <router-link to="/legal/legal-search" class="block h-full">
-                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                  <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                        <Search class="w-7 h-7 text-white" />
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <Search class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Legal Search Engine</CardTitle>
                       <CardDescription>Pencarian Semantik Cerdas</CardDescription>
@@ -219,7 +220,7 @@ const scrollToSection = (id: string) => {
                       </p>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="link" class="p-0 text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
+                      <Button variant="link" class="p-0 text-[#125d72] group-hover:translate-x-1 transition-transform">
                           Cari Regulasi <ArrowRight class="ml-2 w-4 h-4" />
                       </Button>
                     </CardFooter>
@@ -231,11 +232,11 @@ const scrollToSection = (id: string) => {
       </section>
 
       <!-- Meeting Transcription Section -->
-      <section id="transcription" class="py-24 bg-secondary/5 border-t border-border/50" ref="transcriptionSectionRef">
+      <section id="transcription" class="py-24 bg-[#e7f6f9]/50 border-t border-border/50" ref="transcriptionSectionRef">
         <div class="container px-4 space-y-16" :style="transcriptionSectionStyle">
           <div class="text-center space-y-4">
-             <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Mic class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+             <div class="w-16 h-16 bg-[#14a2ba]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Mic class="w-8 h-8 text-[#125d72]" />
              </div>
             <h2 class="text-4xl font-bold tracking-tight">Meeting Transcription Model</h2>
             <p class="text-muted-foreground text-lg max-w-3xl mx-auto">
@@ -245,12 +246,12 @@ const scrollToSection = (id: string) => {
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
              <div class="group relative">
-                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                  <router-link to="/transcription/api" class="block h-full">
-                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                        <Globe class="w-7 h-7 text-white" />
+                      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <Globe class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Meeting Transcription API</CardTitle>
                       <CardDescription>Real-time & Accurate</CardDescription>
@@ -265,12 +266,12 @@ const scrollToSection = (id: string) => {
             </div>
 
              <div class="group relative">
-                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                  <router-link to="/transcription/web" class="block h-full">
-                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                        <LayoutDashboard class="w-7 h-7 text-white" />
+                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <LayoutDashboard class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Web Application</CardTitle>
                       <CardDescription>Manajemen Rekaman Rapat</CardDescription>
@@ -285,12 +286,12 @@ const scrollToSection = (id: string) => {
             </div>
 
              <div class="group relative">
-                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                 <div class="absolute inset-0 bg-gradient-to-r from-[#125d72] to-[#14a2ba] rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                  <router-link to="/transcription/integration" class="block h-full">
-                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
+                   <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 group-hover:border-[#efe62f]/50 hover:-translate-y-2 transition-all duration-300">
                     <CardHeader>
-                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
-                        <Code class="w-7 h-7 text-white" />
+                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#125d72] to-[#14a2ba] flex items-center justify-center mb-4 shadow-lg">
+                        <Code class="w-7 h-7 text-white transition-colors group-hover:text-[#efe62f]" />
                       </div>
                       <CardTitle class="text-xl">Integration Tools</CardTitle>
                       <CardDescription>Seamless SDK Integration</CardDescription>
