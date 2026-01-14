@@ -1,13 +1,28 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import { Button } from '@/components/ui/button'
-import { MessageSquare, FileText, Search, Home, LogOut, PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next'
+import { MessageSquare, FileText, Search, Home, PanelLeftClose, PanelLeftOpen, Menu, ArrowLeft, User, Settings, CircleHelp, LogOut } from 'lucide-vue-next'
 
 const isSidebarOpen = ref(false)
+const isProfileMenuOpen = ref(false)
+const profileMenuRef = ref(null)
+const profileButtonRef = ref(null)
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
 }
+
+const toggleProfileMenu = () => {
+  isProfileMenuOpen.value = !isProfileMenuOpen.value
+}
+
+onClickOutside(profileMenuRef, (event) => {
+  // Ignore clicks on the button itself to prevent double-toggling
+  const target = event?.target as HTMLElement
+  if (profileButtonRef.value && (profileButtonRef.value as HTMLElement).contains(target)) return
+  isProfileMenuOpen.value = false
+})
 </script>
 
 <template>
@@ -22,7 +37,8 @@ const toggleSidebar = () => {
     <!-- Sidebar -->
     <aside 
       :class="[
-        'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out overflow-hidden border-[#14a2ba]/30 z-40',
+        'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out border-[#14a2ba]/30 z-40',
+        isProfileMenuOpen ? 'overflow-visible' : 'overflow-hidden',
         'fixed inset-y-0 left-0 h-full md:relative md:h-auto',
         isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
       ]"
@@ -51,7 +67,7 @@ const toggleSidebar = () => {
         </Button>
       </div>
       
-      <div class="flex-1 overflow-x-hidden py-4">
+      <div class="flex-1 overflow-x-hidden py-4 flex flex-col">
         <nav class="grid items-start px-2 text-sm font-medium space-y-2">
           <router-link 
             to="/legal" 
@@ -93,13 +109,58 @@ const toggleSidebar = () => {
             <span :class="[isSidebarOpen ? 'block' : 'hidden']">Pencarian Legal</span>
           </router-link>
         </nav>
+
+        <div class="mt-auto px-2">
+          <router-link 
+            to="/" 
+            :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20', !isSidebarOpen && 'justify-center']"
+            :title="!isSidebarOpen ? 'Landing Page' : ''"
+          >
+            <ArrowLeft class="h-4 w-4 shrink-0" />
+            <span :class="[isSidebarOpen ? 'block' : 'hidden']">Landing Page</span>
+          </router-link>
+        </div>
       </div>
 
-      <div class="mt-auto p-4 border-t border-[#14a2ba]/30">
-        <Button variant="ghost" :class="['w-full justify-start gap-2 text-[#e7f6f9]/80 hover:text-[#efe62f] hover:bg-[#14a2ba]/20', !isSidebarOpen && 'justify-center px-0']">
-          <LogOut class="h-4 w-4 shrink-0" />
-          <span :class="[isSidebarOpen ? 'block' : 'hidden']">Keluar</span>
-        </Button>
+      <div class="mt-auto px-2 py-4 border-t border-[#14a2ba]/30 relative">
+        <div 
+          v-if="isProfileMenuOpen"
+          ref="profileMenuRef"
+          class="absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-[#14a2ba]/30 bg-[#125d72] p-1 shadow-xl z-50 text-[#e7f6f9]"
+        >
+           <div class="px-3 py-2 text-sm font-semibold border-b border-[#14a2ba]/20 mb-1">
+             User
+           </div>
+           
+           <div class="space-y-1">
+             <button class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-[#14a2ba]/20 hover:text-[#efe62f] transition-colors text-left">
+                <Settings class="h-4 w-4 shrink-0" />
+                <span>Pengaturan</span>
+             </button>
+             <button class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-[#14a2ba]/20 hover:text-[#efe62f] transition-colors text-left">
+                <CircleHelp class="h-4 w-4 shrink-0" />
+                <span>Bantuan</span>
+             </button>
+           </div>
+           
+           <div class="my-1 border-t border-[#14a2ba]/20" />
+           
+           <button class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-[#14a2ba]/20 hover:text-[#efe62f] transition-colors text-left">
+              <LogOut class="h-4 w-4 shrink-0" />
+              <span>Keluar</span>
+           </button>
+        </div>
+
+        <div ref="profileButtonRef">
+          <Button 
+            variant="ghost" 
+            @click="toggleProfileMenu"
+            :class="['w-full justify-start gap-3 px-3 text-[#e7f6f9]/80 hover:text-[#efe62f] hover:bg-[#14a2ba]/20', !isSidebarOpen && 'justify-center px-0']"
+          >
+            <User class="h-4 w-4 shrink-0" />
+            <span :class="[isSidebarOpen ? 'block' : 'hidden']">Profil</span>
+          </Button>
+        </div>
       </div>
     </aside>
 
