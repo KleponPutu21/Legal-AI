@@ -139,7 +139,7 @@ const scrollToSection = (id: string) => {
       <section id="legal-ai" class="py-24 bg-gradient-to-b from-background to-cyan-50/50 dark:to-cyan-950/20" ref="legalSectionRef">
         <div class="container px-4 space-y-16" :style="legalSectionStyle">
           <div class="text-center space-y-4">
-             <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
+             <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Shield class="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
              </div>
             <h2 class="text-4xl font-bold tracking-tight">Finetuning LLM Domain Hukum</h2>
@@ -234,7 +234,7 @@ const scrollToSection = (id: string) => {
       <section id="transcription" class="py-24 bg-secondary/5 border-t border-border/50" ref="transcriptionSectionRef">
         <div class="container px-4 space-y-16" :style="transcriptionSectionStyle">
           <div class="text-center space-y-4">
-             <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 -rotate-3">
+             <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Mic class="w-8 h-8 text-blue-600 dark:text-blue-400" />
              </div>
             <h2 class="text-4xl font-bold tracking-tight">Meeting Transcription Model</h2>
