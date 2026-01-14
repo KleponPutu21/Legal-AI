@@ -87,7 +87,7 @@ const handleKeydown = (e: KeyboardEvent) => {
   <!-- Main container with branded gradient background -->
   <div class="min-h-screen bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30 flex flex-col relative overflow-hidden">
     
-    <!-- Decorative background blobs -->
+    <!-- Decorative background blob -->
     <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#14a2ba]/10 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#efe62f]/10 rounded-full blur-[80px] pointer-events-none"></div>
 
