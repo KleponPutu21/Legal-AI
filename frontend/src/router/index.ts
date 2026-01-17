@@ -12,6 +12,11 @@ const router = createRouter({
             component: LandingView
         },
         {
+            path: '/login',
+            name: 'login',
+            component: () => import('@/views/LoginView.vue')
+        },
+        {
             path: '/legal',
             component: MainLayout,
             children: [
