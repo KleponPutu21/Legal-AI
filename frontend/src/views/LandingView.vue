@@ -91,7 +91,11 @@ const scrollToSection = (id: string) => {
         </nav>
         
         <div class="flex items-center gap-2 z-10">
-            <!-- Optional Login/Sign up buttons could go here -->
+            <router-link to="/login">
+              <Button class="bg-[#14a2ba] hover:bg-[#125d72] text-white border-0 shadow-md">
+                Masuk
+              </Button>
+            </router-link>
         </div>
       </div>
     </header>

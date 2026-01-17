@@ -1,13 +1,71 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
 import { Button } from '@/components/ui/button'
-import { MessageSquare, FileText, Search, Home, PanelLeftClose, PanelLeftOpen, Menu, ArrowLeft, User, Settings, CircleHelp, LogOut } from 'lucide-vue-next'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { MessageSquare, FileText, Search, Home, PanelLeftClose, PanelLeftOpen, Menu, ArrowLeft, User, Settings, CircleHelp, LogOut, Edit } from 'lucide-vue-next'
 
+const router = useRouter()
 const isSidebarOpen = ref(false)
 const isProfileMenuOpen = ref(false)
 const profileMenuRef = ref(null)
 const profileButtonRef = ref(null)
+
+// Auth & Profile State
+const showAuthDialog = ref(false)
+const showProfileDialog = ref(false)
+const userName = ref('User')
+
+const profileForm = ref({
+  name: ''
+})
+
+onMounted(() => {
+  const isAuth = localStorage.getItem('isAuthenticated')
+  const isGuest = localStorage.getItem('isGuest')
+  
+  if (!isAuth && !isGuest) {
+    showAuthDialog.value = true
+  }
+
+  // Load user name
+  const storedName = localStorage.getItem('userName')
+  if (storedName) {
+    userName.value = storedName
+  }
+})
+
+const handleLoginRedirect = () => {
+  showAuthDialog.value = false
+  router.push('/login')
+}
+
+const handleGuest = () => {
+  localStorage.setItem('isGuest', 'true')
+  showAuthDialog.value = false
+}
+
+const openProfileEdit = () => {
+  profileForm.value.name = userName.value
+  showProfileDialog.value = true
+  isProfileMenuOpen.value = false
+}
+
+const saveProfile = () => {
+  userName.value = profileForm.value.name
+  localStorage.setItem('userName', profileForm.value.name)
+  showProfileDialog.value = false
+}
+
+const handleLogout = () => {
+   localStorage.removeItem('isAuthenticated')
+   localStorage.removeItem('userName')
+   localStorage.removeItem('isGuest')
+   router.push('/login')
+}
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -18,7 +76,6 @@ const toggleProfileMenu = () => {
 }
 
 onClickOutside(profileMenuRef, (event) => {
-  // Ignore clicks on the button itself to prevent double-toggling
   const target = event?.target as HTMLElement
   if (profileButtonRef.value && (profileButtonRef.value as HTMLElement).contains(target)) return
   isProfileMenuOpen.value = false
@@ -27,6 +84,56 @@ onClickOutside(profileMenuRef, (event) => {
 
 <template>
   <div class="h-screen overflow-hidden bg-background font-sans antialiased flex transition-colors duration-300 relative">
+    
+    <!-- Auth Dialog -->
+    <Dialog v-model:open="showAuthDialog" :persistent="true">
+      <DialogContent class="sm:max-w-[425px] bg-[#082f3a] text-white border-[#14a2ba]/30">
+        <DialogHeader>
+          <DialogTitle>Selamat Datang di PLN Legal AI</DialogTitle>
+          <DialogDescription class="text-gray-300">
+             Silakan masuk untuk akses penuh atau lanjutkan sebagai tamu.
+          </DialogDescription>
+        </DialogHeader>
+        <div class="flex flex-col gap-4 py-4">
+           <Button class="bg-gradient-to-r from-[#125d72] to-[#14a2ba] hover:from-[#0e4b5c] hover:to-[#10899e] text-white border-0" @click="handleLoginRedirect">
+             Masuk / Daftar
+           </Button>
+           <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <span class="w-full border-t border-gray-600" />
+              </div>
+              <div class="relative flex justify-center text-xs uppercase">
+                <span class="bg-[#082f3a] px-2 text-gray-400">Atau</span>
+              </div>
+            </div>
+           <Button variant="outline" class="border-[#e7f6f9]/50 text-[#e7f6f9] bg-transparent hover:bg-[#14a2ba]/20 hover:text-[#efe62f] hover:border-[#efe62f]" @click="handleGuest">
+             Lanjut sebagai Tamu
+           </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+
+    <!-- Profile Edit Dialog -->
+    <Dialog v-model:open="showProfileDialog">
+      <DialogContent class="sm:max-w-[425px] bg-[#082f3a] text-white border-[#14a2ba]/30">
+        <DialogHeader>
+           <DialogTitle>Edit Profil</DialogTitle>
+           <DialogDescription class="text-gray-300">
+             Ubah informasi profil Anda di sini.
+           </DialogDescription>
+        </DialogHeader>
+        <div class="grid gap-4 py-4">
+           <div class="grid grid-cols-4 items-center gap-4">
+             <Label for="name" class="text-right text-gray-300">Nama</Label>
+             <Input id="name" v-model="profileForm.name" class="col-span-3 bg-black/20 border-gray-600 text-white" />
+           </div>
+        </div>
+        <DialogFooter>
+           <Button type="submit" @click="saveProfile" class="bg-[#14a2ba] hover:bg-[#125d72]">Simpan Perubahan</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
     <!-- Mobile Backdrop -->
     <div 
       v-if="isSidebarOpen" 
@@ -128,8 +235,10 @@ onClickOutside(profileMenuRef, (event) => {
           ref="profileMenuRef"
           class="absolute bottom-full left-2 mb-2 w-56 rounded-lg border border-[#14a2ba]/30 bg-[#082f3a] p-1 shadow-[0_0_15px_rgba(0,0,0,0.3)] z-50 text-[#e7f6f9]"
         >
-           <div class="px-3 py-2 text-sm font-semibold border-b border-[#14a2ba]/20 mb-1">
-             User
+           <div class="px-2 py-2 border-b border-[#14a2ba]/20 mb-1">
+             <Button variant="ghost" class="w-full justify-start text-sm font-semibold hover:bg-[#14a2ba]/20 hover:text-[#efe62f] px-3" @click="openProfileEdit">
+                {{ userName }} <Edit class="ml-auto h-3 w-3 opacity-50" />
+             </Button>
            </div>
            
            <div class="space-y-1">
@@ -145,7 +254,7 @@ onClickOutside(profileMenuRef, (event) => {
            
            <div class="my-1 border-t border-[#14a2ba]/20" />
            
-           <button class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-[#14a2ba]/20 hover:text-[#efe62f] transition-colors text-left">
+           <button class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-[#14a2ba]/20 hover:text-[#efe62f] transition-colors text-left" @click="handleLogout">
               <LogOut class="h-4 w-4 shrink-0" />
               <span>Keluar</span>
            </button>
