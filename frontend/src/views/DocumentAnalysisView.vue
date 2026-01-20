@@ -2,7 +2,7 @@
 import { ref, nextTick } from 'vue'
 import { analyzeDocument } from '@/services/api'
 import { Button } from '@/components/ui/button'
-import { Upload, FileText, AlertCircle, CheckCircle, FileSearch, X, Trash2 } from 'lucide-vue-next'
+import { Upload, FileText, AlertCircle, CheckCircle, FileSearch, X } from 'lucide-vue-next'
 import MarkdownIt from 'markdown-it'
 
 const md = new MarkdownIt({

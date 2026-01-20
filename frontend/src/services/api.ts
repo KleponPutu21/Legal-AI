@@ -16,15 +16,17 @@ export interface ChatMessage {
 /**
  * Mengirim pesan ke AI
  */
-export async function sendMessage(message: string): Promise<string> {
+
+export async function sendMessage(message: string, model: string = 'base-model'): Promise<string> {
     try {
         const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message }),
+            body: JSON.stringify({ message, model_id: model }),
         });
+
 
         if (!response.ok) {
             const errorData = await response.json();

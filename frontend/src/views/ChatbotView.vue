@@ -4,7 +4,7 @@ import { sendMessage, type ChatMessage } from '@/services/api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Send, User, Bot } from 'lucide-vue-next'
+import { Send, User, Bot , ChevronDown} from 'lucide-vue-next'
 import MarkdownIt from 'markdown-it'
 
 const md = new MarkdownIt({
@@ -30,6 +30,10 @@ const messages = ref<ChatMessage[]>([
 const inputMessage = ref('')
 const isLoading = ref(false)
 
+// Model Selection
+const currentModel = ref('base-model') // 'base-model' or 'fine-tuned-v1'
+const showModelSelector = ref(false)
+
 const handleSendMessage = async () => {
   if (!inputMessage.value.trim() || isLoading.value) return
 
@@ -48,7 +52,7 @@ const handleSendMessage = async () => {
 
   try {
     // Panggil API
-    const response = await sendMessage(currentInput)
+    const response = await sendMessage(currentInput, currentModel.value)
     
     // Tambahkan respon AI
     const aiMsg: ChatMessage = {
@@ -87,7 +91,7 @@ const handleKeydown = (e: KeyboardEvent) => {
   <!-- Main container with branded gradient background -->
   <div class="min-h-screen bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30 flex flex-col relative overflow-hidden">
     
-    <!-- Decorative background blobs -->
+    <!-- Decorative background blob -->
     <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#14a2ba]/10 rounded-full blur-[100px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#efe62f]/10 rounded-full blur-[80px] pointer-events-none"></div>
 
@@ -106,6 +110,39 @@ const handleKeydown = (e: KeyboardEvent) => {
         </div>
       </div>
       <!-- Optional: Add action buttons here if needed -->
+
+      <!-- Model Selector -->
+      <div class="relative">
+        <button 
+          @click="showModelSelector = !showModelSelector"
+          class="flex items-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-[#14a2ba]/20 rounded-xl text-[#125d72] text-sm font-medium transition-all duration-200"
+        >
+          <span>{{ currentModel === 'base-model' ? 'Base Model' : 'Fine-tuned v1' }}</span>
+          <ChevronDown class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': showModelSelector }" />
+        </button>
+        
+        <div v-if="showModelSelector" 
+             class="absolute right-0 top-full mt-2 w-48 bg-white/95 backdrop-blur-xl border border-[#14a2ba]/20 rounded-xl shadow-xl shadow-[#125d72]/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200"
+             @mouseleave="showModelSelector = false"
+        >
+          <div class="p-1">
+            <button 
+              @click="currentModel = 'base-model'; showModelSelector = false"
+              class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
+              :class="currentModel === 'base-model' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
+            >
+              Base Model
+            </button>
+            <button 
+              @click="currentModel = 'fine-tuned-v1'; showModelSelector = false"
+              class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
+              :class="currentModel === 'fine-tuned-v1' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
+            >
+              Fine-tuned v1
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
 
     <!-- Chat Area - Borderless & Spacious -->
