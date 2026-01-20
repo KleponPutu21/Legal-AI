@@ -114,7 +114,7 @@ const scrollToSection = (id: string) => {
           
       <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-tight animate-in slide-in-from-bottom-8 fade-in duration-1000">
             Transformasi Digital <br/>
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#125d72] via-[#14a2ba] to-[#efe62f]">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#125d72] to-[#14a2ba]">
                PLN Group
             </span>
           </h1>
