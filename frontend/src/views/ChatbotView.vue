@@ -51,7 +51,7 @@ const handleSendMessage = async () => {
   isLoading.value = true
 
   try {
-    // Panggil API
+    // Panggil API dengan model yang dipilih
     const response = await sendMessage(currentInput, currentModel.value)
     
     // Tambahkan respon AI
@@ -111,38 +111,7 @@ const handleKeydown = (e: KeyboardEvent) => {
       </div>
       <!-- Optional: Add action buttons here if needed -->
 
-      <!-- Model Selector -->
-      <div class="relative">
-        <button 
-          @click="showModelSelector = !showModelSelector"
-          class="flex items-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-[#14a2ba]/20 rounded-xl text-[#125d72] text-sm font-medium transition-all duration-200"
-        >
-          <span>{{ currentModel === 'base-model' ? 'Base Model' : 'Fine-tuned v1' }}</span>
-          <ChevronDown class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': showModelSelector }" />
-        </button>
-        
-        <div v-if="showModelSelector" 
-             class="absolute right-0 top-full mt-2 w-48 bg-white/95 backdrop-blur-xl border border-[#14a2ba]/20 rounded-xl shadow-xl shadow-[#125d72]/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200"
-             @mouseleave="showModelSelector = false"
-        >
-          <div class="p-1">
-            <button 
-              @click="currentModel = 'base-model'; showModelSelector = false"
-              class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
-              :class="currentModel === 'base-model' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
-            >
-              Base Model
-            </button>
-            <button 
-              @click="currentModel = 'fine-tuned-v1'; showModelSelector = false"
-              class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
-              :class="currentModel === 'fine-tuned-v1' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
-            >
-              Fine-tuned v1
-            </button>
-          </div>
-        </div>
-      </div>
+
     </header>
 
     <!-- Chat Area - Borderless & Spacious -->
@@ -216,13 +185,44 @@ const handleKeydown = (e: KeyboardEvent) => {
           <form @submit.prevent="handleSendMessage" class="relative group">
             <div class="absolute inset-0 bg-white/40 rounded-[2rem] blur-md transform translate-y-2"></div>
             <div class="relative w-full bg-white/90 backdrop-blur-xl border border-[#125d72]/10 focus-within:border-[#14a2ba] focus-within:ring-4 focus-within:ring-[#14a2ba]/10 rounded-[2rem] shadow-2xl shadow-[#125d72]/10 transition-all duration-300 flex items-end">
+              <div class="relative pb-5 pl-4">
+                <button 
+                  @click="showModelSelector = !showModelSelector"
+                  class="flex items-center gap-2 px-3 py-2 bg-[#e7f6f9] hover:bg-[#d1eff4] rounded-xl text-[#125d72] text-xs font-medium transition-all duration-200 whitespace-nowrap"
+                  type="button"
+                >
+                  <span>{{ currentModel === 'base-model' ? 'Base Model' : 'Fine-tuned v1' }}</span>
+                  <ChevronDown class="w-3 h-3 transition-transform duration-200" :class="{ 'rotate-180': showModelSelector }" />
+                </button>
+                
+                <div v-if="showModelSelector" 
+                     class="absolute bottom-full left-0 mb-2 w-48 bg-white/95 backdrop-blur-xl border border-[#14a2ba]/20 rounded-xl shadow-xl shadow-[#125d72]/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200"
+                     @mouseleave="showModelSelector = false"
+                >
+                  <div class="p-1">
+                    <button 
+                      @click="currentModel = 'base-model'; showModelSelector = false"
+                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
+                      :class="currentModel === 'base-model' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
+                    >
+                      Base Model
+                    </button>
+                    <button 
+                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors text-[#125d72]/40 bg-gray-50 cursor-not-allowed"
+                      disabled
+                    >
+                      Fine-tuned v1 (Coming Soon)
+                    </button>
+                  </div>
+                </div>
+              </div>
               <Textarea 
                 v-model="inputMessage" 
                 placeholder="Ketik pertanyaan hukum Anda di sini..." 
                 :disabled="isLoading"
                 rows="1"
                 @keydown.enter.prevent="handleKeydown"
-                class="w-full pl-8 py-6 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-[#125d72] placeholder:text-[#125d72]/40 text-lg resize-none min-h-[80px] max-h-[200px] overflow-y-auto rounded-[2rem]"
+                class="flex-1 pl-4 py-6 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-[#125d72] placeholder:text-[#125d72]/40 text-lg resize-none min-h-[80px] max-h-[200px] overflow-y-auto rounded-[2rem]"
                 style="field-sizing: content;"
               />
               <div class="py-4 pr-4">
