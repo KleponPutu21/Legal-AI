@@ -28,20 +28,24 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 # Using Qwen2.5-7B-Instruct as requested
 REPO_ID = "Qwen/Qwen2.5-7B-Instruct"
 
-client = InferenceClient(token=HF_TOKEN)
+# Custom Model Config
+INFERENCE_URL = os.getenv("INFERENCE_URL")
+INFERENCE_API_KEY = os.getenv("INFERENCE_API_KEY")
+
+base_client = InferenceClient(token=HF_TOKEN)
 
 class ChatRequest(BaseModel):
     message: str
+    model_id: str = "base-model" # default to base-model
 
 @app.get("/")
 def read_root():
     return {"message": "LegalBot ID API is running"}
 
+import requests
+
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
-    if not HF_TOKEN:
-        raise HTTPException(status_code=500, detail="HF_TOKEN not set in backend")
-    
     try:
         # Panggil endpoint Inference API
         # Kita gunakan template chat sederhana untuk Qwen
@@ -50,14 +54,61 @@ async def chat_endpoint(request: ChatRequest):
             {"role": "user", "content": request.message}
         ]
         
-        response = client.chat_completion(
-            model=REPO_ID,
-            messages=messages,
-            max_tokens=512,
-            temperature=0.7
-        )
-        
-        return {"response": response.choices[0].message.content}
+        # Check model selection
+        if request.model_id == "fine-tuned-v1":
+            if not INFERENCE_URL or not INFERENCE_API_KEY:
+                 raise HTTPException(status_code=500, detail="INFERENCE_URL or INFERENCE_API_KEY not configured for Fine-tuned v1")
+            
+            # Using direct HTTP request for custom model to avoid automatic path appending
+            # UPDATE: Adapting to user-specified server format
+            payload = {
+                "user_message": request.message, # Server expects single string
+                "max_new_tokens": 512,           # Server expects max_new_tokens
+                "temperature": 0.7
+            }
+            
+            headers = {
+                "X-API-KEY": INFERENCE_API_KEY,
+            "Content-Type": "application/json"
+            }
+            
+            try:
+                response = requests.post(INFERENCE_URL, json=payload, headers=headers, timeout=120)
+                response.raise_for_status()
+                
+                # Attempt to parse response
+                # Case 1: OpenAI format {"choices": [{"message": {"content": "..."}}]}
+                # Case 2: Simple JSON {"response": "..."} or {"generated_text": "..."}
+                data = response.json()
+                
+                if "choices" in data and len(data["choices"]) > 0:
+                     return {"response": data["choices"][0]["message"]["content"]}
+                elif "response" in data:
+                     return {"response": data["response"]}
+                elif "generated_text" in data:
+                     return {"response": data["generated_text"]}
+                else:
+                    # Fallback: dump the whole JSON or specific field
+                    print(f"Unknown response format: {data}")
+                    return {"response": str(data)}
+                    
+            except Exception as e:
+                print(f"Error calling custom model: {e}")
+                raise HTTPException(status_code=500, detail=f"Custom Model Error: {str(e)}")
+
+        else:
+            # Base Model (Qwen via HF Client)
+            if not HF_TOKEN:
+                 raise HTTPException(status_code=500, detail="HF_TOKEN not set in backend")
+
+            response = base_client.chat_completion(
+                model=REPO_ID,
+                messages=messages,
+                max_tokens=512,
+                temperature=0.7
+            )
+            return {"response": response.choices[0].message.content}
+
     except Exception as e:
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
