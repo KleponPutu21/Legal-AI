@@ -52,7 +52,7 @@ const handleSendMessage = async () => {
 
   try {
     // Panggil API
-    const response = await sendMessage(currentInput)
+    const response = await sendMessage(currentInput, currentModel.value)
     
     // Tambahkan respon AI
     const aiMsg: ChatMessage = {
