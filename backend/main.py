@@ -137,7 +137,7 @@ async def analyze_document(file: UploadFile = File(...)):
             {"role": "user", "content": prompt}
         ]
         
-        response = client.chat_completion(
+        response = base_client.chat_completion(
             model=REPO_ID,
             messages=messages,
             max_tokens=512,
@@ -168,7 +168,7 @@ async def search_endpoint(request: SearchRequest):
             {"role": "user", "content": prompt}
         ]
         
-        response = client.chat_completion(
+        response = base_client.chat_completion(
             model=REPO_ID,
             messages=messages,
             max_tokens=512,
