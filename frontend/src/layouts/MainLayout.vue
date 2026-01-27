@@ -9,6 +9,20 @@ const isProfileMenuOpen = ref(false)
 const profileMenuRef = ref(null)
 const profileButtonRef = ref(null)
 
+import { useRouter } from 'vue-router'
+import { useChatHistory } from '@/composables/useChatHistory'
+import { MessageSquarePlus, Trash2 } from 'lucide-vue-next'
+
+const router = useRouter()
+const { sessions, deleteSession } = useChatHistory()
+
+const handleNewChat = () => {
+    router.push('/legal/chatbot')
+    if (window.innerWidth < 768) {
+        isSidebarOpen.value = false
+    }
+}
+
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
 }
@@ -109,6 +123,36 @@ onClickOutside(profileMenuRef, (event) => {
             <span :class="[isSidebarOpen ? 'block' : 'hidden']">Pencarian Legal</span>
           </router-link>
         </nav>
+
+        <!-- Chat History Section -->
+        <div class="mt-4 px-2" v-if="sessions.length > 0">
+           <div class="flex items-center justify-between px-3 py-2 text-xs font-semibold text-[#e7f6f9]/50 uppercase tracking-wider mb-1" v-if="isSidebarOpen">
+             <span>Riwayat Chat</span>
+             <button @click="handleNewChat" class="text-[#e7f6f9]/80 hover:text-[#efe62f] transition-colors" title="Chat Baru">
+                <MessageSquarePlus class="h-3 w-3" />
+             </button>
+           </div>
+           
+           <div class="space-y-1 overflow-y-auto max-h-[200px] scrollbar-thin scrollbar-thumb-[#14a2ba]/30 scrollbar-track-transparent">
+              <div v-for="session in sessions" :key="session.id" class="group relative">
+                 <router-link 
+                   :to="`/legal/chatbot?chatId=${session.id}`"
+                   :class="['flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 text-sm transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20', !isSidebarOpen && 'justify-center']"
+                   active-class="bg-[#14a2ba]/30 text-[#efe62f]"
+                 >
+                    <MessageSquare class="h-4 w-4 shrink-0 opacity-70" />
+                    <span :class="[isSidebarOpen ? 'block truncate' : 'hidden']">{{ session.title }}</span>
+                 </router-link>
+                 <button 
+                    v-if="isSidebarOpen"
+                    @click.prevent="deleteSession(session.id)"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 text-[#e7f6f9]/50 hover:text-red-400 p-1 transition-all"
+                 >
+                    <Trash2 class="h-3 w-3" />
+                 </button>
+              </div>
+           </div>
+        </div>
 
         <div class="mt-auto px-2">
           <router-link 

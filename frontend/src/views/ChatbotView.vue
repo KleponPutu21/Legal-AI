@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useChatHistory } from '@/composables/useChatHistory'
 import { sendMessage, type ChatMessage } from '@/services/api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -18,43 +20,77 @@ const renderMessage = (content: string) => {
   return md.render(content)
 }
 
-const messages = ref<ChatMessage[]>([
-  {
+const route = useRoute()
+const router = useRouter()
+const { getSession, createSession, updateSession } = useChatHistory()
+
+// State
+const messages = ref<ChatMessage[]>([])
+const inputMessage = ref('')
+const isLoading = ref(false)
+const currentModel = ref('base-model') 
+const showModelSelector = ref(false)
+
+// Initial Welcome Message
+const welcomeMessage: ChatMessage = {
     id: 'welcome',
     role: 'assistant',
     content: 'Halo! Saya adalah asisten hukum AI Anda. Ada yang bisa saya bantu terkait masalah hukum di Indonesia hari ini?',
     timestamp: new Date()
-  }
-])
+}
 
-const inputMessage = ref('')
-const isLoading = ref(false)
+// Load chat from ID or set default
+const loadChat = () => {
+    const chatId = route.query.chatId as string
+    if (chatId) {
+        const session = getSession(chatId)
+        if (session) {
+            messages.value = [...session.messages]
+        } else {
+            // Invalid ID, redirect to new chat
+            router.replace('/legal/chatbot')
+            messages.value = [welcomeMessage]
+        }
+    } else {
+        messages.value = [welcomeMessage]
+    }
+}
 
-// Model Selection
-const currentModel = ref('base-model') // 'base-model' or 'fine-tuned-v1'
-const showModelSelector = ref(false)
+// Watch for route changes (navigating between chats)
+watch(() => route.query.chatId, () => {
+    loadChat()
+}, { immediate: true })
 
 const handleSendMessage = async () => {
   if (!inputMessage.value.trim() || isLoading.value) return
 
-  // Tambahkan pesan user
   const userMsg: ChatMessage = {
     id: Date.now().toString(),
     role: 'user',
     content: inputMessage.value,
     timestamp: new Date()
   }
-  messages.value.push(userMsg)
   
-  const currentInput = inputMessage.value
+  // Optimistic update
+  messages.value.push(userMsg)
+  const userContent = inputMessage.value
   inputMessage.value = ''
   isLoading.value = true
 
+  // Handle Session Creation/Update
+  let chatId = route.query.chatId as string
+  if (!chatId) {
+      chatId = createSession(userContent, messages.value)
+      // Update URL without reloading
+      await router.replace({ query: { ...route.query, chatId } })
+  }
+  
+  // Save user message immediately
+  updateSession(chatId, messages.value)
+
   try {
-    // Panggil API dengan model yang dipilih
-    const response = await sendMessage(currentInput, currentModel.value)
+    const response = await sendMessage(userContent, currentModel.value)
     
-    // Tambahkan respon AI
     const aiMsg: ChatMessage = {
       id: (Date.now() + 1).toString(),
       role: 'assistant',
@@ -62,27 +98,34 @@ const handleSendMessage = async () => {
       timestamp: new Date()
     }
     messages.value.push(aiMsg)
+    
+    // Save AI message
+    updateSession(chatId, messages.value)
+
   } catch (error: any) {
     console.error(error)
-    // Add error message to chat
     messages.value.push({
       id: Date.now().toString(),
       role: 'assistant',
       content: `⚠️ Error: ${error.message || 'Gagal terhubung ke server.'}. Pastikan backend berjalan atau gunakan mock mode.`,
       timestamp: new Date()
     })
+    // Save error message too
+    updateSession(chatId, messages.value)
   } finally {
     isLoading.value = false
   }
 }
 
 const handleKeydown = (e: KeyboardEvent) => {
+  // Check if we are in the middle of composition (e.g. CJK input)
+  if (e.isComposing) return
+  
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
     handleSendMessage()
-  } else if (e.key === 'Enter' && e.shiftKey) {
-    // Allow default behavior (new line)
-  }
+  } 
+  // allow default for Shift+Enter
 }
 
 </script>
