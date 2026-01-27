@@ -40,7 +40,7 @@ onClickOutside(profileMenuRef, (event) => {
 </script>
 
 <template>
-  <div class="h-screen overflow-hidden bg-background font-sans antialiased flex transition-colors duration-300 relative">
+  <div class="min-h-screen bg-background font-sans antialiased flex transition-colors duration-300 relative">
     <!-- Mobile Backdrop -->
     <div 
       v-if="isSidebarOpen" 
@@ -53,7 +53,7 @@ onClickOutside(profileMenuRef, (event) => {
       :class="[
         'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out border-[#14a2ba]/30 z-40',
         isProfileMenuOpen ? 'overflow-visible' : 'overflow-hidden',
-        'fixed inset-y-0 left-0 h-full md:relative md:h-auto',
+        'fixed inset-y-0 left-0 h-full md:sticky md:top-0 md:h-screen',
         isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
       ]"
     >
@@ -227,7 +227,7 @@ onClickOutside(profileMenuRef, (event) => {
         </div>
       </header>
 
-      <main class="flex-1 overflow-auto bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30">
+      <main class="flex-1 bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30">
         <router-view />
       </main>
     </div>

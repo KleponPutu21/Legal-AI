@@ -5,7 +5,6 @@ import { useChatHistory } from '@/composables/useChatHistory'
 import { sendMessage, type ChatMessage } from '@/services/api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Send, User, Bot , ChevronDown} from 'lucide-vue-next'
 import MarkdownIt from 'markdown-it'
 
@@ -132,11 +131,11 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 <template>
   <!-- Main container with branded gradient background -->
-  <div class="min-h-screen bg-gradient-to-br from-[#e7f6f9] via-white to-[#d9d9d9]/30 flex flex-col relative overflow-hidden">
+  <div class="min-h-full flex flex-col relative pb-32">
     
     <!-- Decorative background blob -->
-    <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#14a2ba]/10 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#efe62f]/10 rounded-full blur-[80px] pointer-events-none"></div>
+    <div class="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#14a2ba]/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#efe62f]/10 rounded-full blur-[80px] pointer-events-none"></div>
 
     <!-- Header -->
     <header class="w-full px-6 py-6 flex items-center justify-between relative z-20 max-w-6xl mx-auto">
@@ -152,15 +151,10 @@ const handleKeydown = (e: KeyboardEvent) => {
           <p class="text-xs text-[#125d72]/70 font-medium">PLN IconPlus Support</p>
         </div>
       </div>
-      <!-- Optional: Add action buttons here if needed -->
-
-
     </header>
 
-    <!-- Chat Area - Borderless & Spacious -->
-    <main class="flex-1 w-full max-w-4xl mx-auto flex flex-col relative z-10 overflow-hidden">
-      
-      <ScrollArea class="flex-1 px-4 md:px-0">
+    <!-- Chat Area -->
+    <main class="w-full max-w-4xl mx-auto flex flex-col relative z-10 px-4">
         <div class="space-y-6 pb-4 pt-4">
           <template v-for="(msg, index) in messages" :key="msg.id">
             <div 
@@ -220,10 +214,11 @@ const handleKeydown = (e: KeyboardEvent) => {
             </div>
           </div>
         </div>
-      </ScrollArea>
+    </main>
 
-      <!-- Fixed Input Area -->
-      <div class="w-full px-4 md:px-8 pb-6 pt-2 z-30">
+    <!-- Fixed Input Area -->
+    <div class="fixed bottom-0 right-0 w-full pl-0 md:pl-16 z-30">
+      <div class="w-full px-4 md:px-8 pb-6 pt-2 bg-gradient-to-t from-white via-white/80 to-transparent">
         <div class="max-w-4xl mx-auto">
           <form @submit.prevent="handleSendMessage" class="relative group">
             <div class="absolute inset-0 bg-white/40 rounded-[2rem] blur-md transform translate-y-2"></div>
@@ -265,7 +260,7 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :disabled="isLoading"
                 rows="1"
                 @keydown.enter.prevent="handleKeydown"
-                class="flex-1 pl-4 py-6 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-[#125d72] placeholder:text-[#125d72]/40 text-lg resize-none min-h-[80px] max-h-[200px] overflow-y-auto rounded-[2rem]"
+                  class="flex-1 pl-4 py-6 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-[#125d72] placeholder:text-[#125d72]/40 text-lg resize-none min-h-[80px] max-h-[200px] overflow-y-auto rounded-[2rem]"
                 style="field-sizing: content;"
               />
               <div class="py-4 pr-4">
@@ -285,7 +280,6 @@ const handleKeydown = (e: KeyboardEvent) => {
           </p>
         </div>
       </div>
-
-    </main>
+    </div>
   </div>
 </template>
