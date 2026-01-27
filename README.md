@@ -1,4 +1,4 @@
-# LegalBot ID - Prototipe Asisten Hukum AI Indonesia
+# LegalAI PLN - Prototipe Asisten Hukum AI Indonesia
 
 Selamat datang di repositori LegalBot ID. Proyek ini adalah **prototipe** aplikasi web yang menyediakan layanan bantuan hukum berbasis AI untuk konteks hukum di Indonesia.
 
