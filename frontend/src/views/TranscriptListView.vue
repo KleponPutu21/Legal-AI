@@ -147,11 +147,9 @@ onUnmounted(() => {
 
 <template>
 <div class="w-full h-full">
-  <!-- WRAPPER UTAMA -->
   <div class="flex h-full">
 
     <!-- SIDEBAR -->
-<!-- Sidebar Transcription -->
 <aside
   :class="[
     'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out border-[#14a2ba]/30 z-40',
@@ -159,13 +157,11 @@ onUnmounted(() => {
     isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
   ]"
 >
-  <!-- Header -->
   <div class="h-16 flex items-center border-b border-[#14a2ba]/30 px-4 whitespace-nowrap overflow-hidden relative group shrink-0">
      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="w-auto h-8 transition-transform duration-300 shrink-0" :class="!isSidebarOpen && 'group-hover:scale-110'" />
           <span :class="['transition-opacity duration-300 pl-2', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
             PLN AI Transcription
           </span>
-    <!-- Title -->
     <router-link
       to="/transcription/TranscriptionView"
       class="flex items-center gap-2 font-semibold text-white"
@@ -180,7 +176,6 @@ onUnmounted(() => {
       </span> -->
     </router-link>
 
-    <!-- Toggle Button -->
     <Button
       variant="ghost"
       size="icon"
@@ -198,11 +193,9 @@ onUnmounted(() => {
 
   </div>
 
-  <!-- Menu -->
+  
   <div class="flex flex-col flex-1 py-4 overflow-x-hidden">
     <nav class="grid items-start px-2 space-y-2 text-sm font-medium">
-
-      <!-- Transcript -->
       <router-link
         to="/transcription/TranscriptionView"
         :class="[
