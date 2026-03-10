@@ -12,7 +12,7 @@ class HttpClient {
     private baseURL: string;
     private defaultHeaders: HeadersInit;
 
-    constructor(baseURL: string = 'http://localhost:8000') {
+    constructor(baseURL: string = import.meta.env.VITE_API_URL || 'http://localhost:8000') {
         this.baseURL = baseURL;
         this.defaultHeaders = {
             'Content-Type': 'application/json',
@@ -106,5 +106,5 @@ class HttpClient {
     }
 }
 
-export const http = new HttpClient();
+export const http = new HttpClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
 export type { RequestConfig, ApiResponse };
