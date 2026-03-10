@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 import LandingView from '@/views/LandingView.vue'
+import TranscriptionView from '@/views/TranscriptionView.vue'
+import TranscriptListView from '@/views/TranscriptListView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -36,6 +38,34 @@ const router = createRouter({
                     component: () => import('@/views/LegalSearchView.vue')
                 }
             ]
+        },
+        {
+            path: '/transcription',
+            redirect: '/transcription/web'
+        },
+        {
+            path: '/transcription/web',
+            name: 'transcription-web',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/api',
+            name: 'transcription-api',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/integration',
+            name: 'transcription-integration',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/transcript-list',
+            name: 'transcription-transcript-list',
+            component: TranscriptListView
+        },
+        {
+            path: '/transcription/TranscriptionView',
+            redirect: '/transcription/web'
         }
     ]
 })
