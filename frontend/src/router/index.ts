@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
-import MeetingLayout from '@/layouts/MeetingLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 import LandingView from '@/views/LandingView.vue'
 import TranscriptionView from '@/views/TranscriptionView.vue'
@@ -41,20 +40,32 @@ const router = createRouter({
             ]
         },
         {
-            path: '/meeting',
-            component: MeetingLayout,
-            children: [
-                {
-                    path: '',
-                    name: 'home2',
-                    component: TranscriptionView
-                },
-                {
-                    path: 'history',
-                    name: 'history',
-                    component: TranscriptListView
-                }
-            ]
+            path: '/transcription',
+            redirect: '/transcription/web'
+        },
+        {
+            path: '/transcription/web',
+            name: 'transcription-web',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/api',
+            name: 'transcription-api',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/integration',
+            name: 'transcription-integration',
+            component: TranscriptionView
+        },
+        {
+            path: '/transcription/transcript-list',
+            name: 'transcription-transcript-list',
+            component: TranscriptListView
+        },
+        {
+            path: '/transcription/TranscriptionView',
+            redirect: '/transcription/web'
         }
     ]
 })
