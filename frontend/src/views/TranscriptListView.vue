@@ -5,20 +5,19 @@ export const description = "A dashboard with sidebar, data table, and analytics 
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue'
-import { PanelLeftOpen, PanelLeftClose, FileText, History } from "lucide-vue-next"
-import { useTranscriptStore } from '@/transcript/features/zoom_resume/store'
-import type { Transcript } from '@/transcript/features/zoom_resume/types'
+import { useTranscriptStore } from '@/services/zoom/store'
+import type { Transcript } from '@/services/zoom/types'
 
-import DataTable from "@/transcript/components/DataTable.vue"
-// import { SidebarInset, SidebarProvider } from "@/transcript/components/ui/sidebar"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/transcript/components/ui/dialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/transcript/components/ui/tabs"
-import { Button } from "@/transcript/components/ui/button"
-import { Badge } from "@/transcript/components/ui/badge"
-import { ScrollArea } from "@/transcript/components/ui/scroll-area"
-import { Separator } from "@/transcript/components/ui/separator"
+import DataTable from "@/components/DataTable.vue"
+// import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 import { Play, Download } from "lucide-vue-next"
-import { transcriptApi } from '@/transcript/features/zoom_resume/api'
+import { transcriptApi } from '@/services/zoom/transcriptApi'
 
 const transcriptStore = useTranscriptStore()
 
@@ -27,12 +26,6 @@ const transcriptStore = useTranscriptStore()
 const isDialogOpen = ref(false)
 const selectedTranscript = ref<Transcript | null>(null)
 const latestZoomTranscript = ref<Transcript | null>(null)
-
-const isSidebarOpen = ref(true)
-
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
 
 // polling holder
 let pollInterval: number | null = null
@@ -148,102 +141,6 @@ onUnmounted(() => {
 <template>
 <div class="w-full h-full">
   <div class="flex h-full">
-
-    <!-- SIDEBAR -->
-<aside
-  :class="[
-    'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out border-[#14a2ba]/30 z-40',
-    'fixed inset-y-0 left-0 h-full md:sticky md:top-0 md:h-screen',
-    isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
-  ]"
->
-  <div class="h-16 flex items-center border-b border-[#14a2ba]/30 px-4 whitespace-nowrap overflow-hidden relative group shrink-0">
-     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="w-auto h-8 transition-transform duration-300 shrink-0" :class="!isSidebarOpen && 'group-hover:scale-110'" />
-          <span :class="['transition-opacity duration-300 pl-2', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
-            PLN AI Transcription
-          </span>
-    <router-link
-      to="/transcription/TranscriptionView"
-      class="flex items-center gap-2 font-semibold text-white"
-    >
-      <!-- <span
-        :class="[
-          'transition-opacity duration-300',
-          isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden'
-        ]"
-      >
-        Transcription
-      </span> -->
-    </router-link>
-
-    <Button
-      variant="ghost"
-      size="icon"
-      @click="toggleSidebar"
-      :class="[
-        'shrink-0 text-[#e7f6f9] hover:bg-[#14a2ba]/20 hover:text-[#efe62f]',
-        isSidebarOpen
-          ? 'ml-auto'
-          : 'absolute inset-0 w-full h-full opacity-0 hover:opacity-100 flex items-center justify-center bg-[#125d72]/90'
-      ]"
-    >
-      <PanelLeftClose v-if="isSidebarOpen" class="w-5 h-5" />
-      <PanelLeftOpen v-else class="w-5 h-5" />
-    </Button>
-
-  </div>
-
-  
-  <div class="flex flex-col flex-1 py-4 overflow-x-hidden">
-    <nav class="grid items-start px-2 space-y-2 text-sm font-medium">
-      <router-link
-        to="/transcription/TranscriptionView"
-        :class="[
-          'flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20',
-          !isSidebarOpen && 'justify-center'
-        ]"
-        active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
-        :title="!isSidebarOpen ? 'Transcript' : ''"
-      >
-        <FileText class="w-4 h-4 shrink-0" />
-        <span :class="[isSidebarOpen ? 'block' : 'hidden']">
-          Transcript
-        </span>
-      </router-link>
-
-      <!-- History -->
-      <router-link
-        to="/transcription/transcript-list"
-        :class="[
-          'flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20',
-          !isSidebarOpen && 'justify-center'
-        ]"
-        active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
-        :title="!isSidebarOpen ? 'History' : ''"
-      >
-        <History class="w-4 h-4 shrink-0" />
-        <span :class="[isSidebarOpen ? 'block' : 'hidden']">
-          History
-        </span>
-      </router-link>
-
-    </nav>
-
-    <!-- Bottom button -->
-    <div class="px-2 mt-auto">
-      <Button
-        @click="$router.push('/')"
-        class="w-full mt-4 bg-[#14a2ba] hover:bg-[#0f7f91] text-white"
-        :class="[!isSidebarOpen && 'hidden']"
-      >
-        Return to Homepage
-      </Button>
-    </div>
-
-  </div>
-</aside>
-
-
     <!-- CONTENT -->
     <div class="flex-1 p-4 overflow-hidden">
       <!-- LATEST ZOOM TRANSCRIPT CARD -->

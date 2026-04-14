@@ -1,16 +1,14 @@
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, ref } from 'vue'
-import { PanelLeftOpen, PanelLeftClose, FileText, History } from "lucide-vue-next"
-import { useRouter } from 'vue-router'
-import { useTranscriptStore } from "@/transcript/features/zoom_resume/store"
+import { onMounted, computed, ref } from 'vue'
+import { useTranscriptStore } from "@/services/zoom/store"
 
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/transcript/components/ui/tabs"
+} from "@/components/ui/tabs"
 import {
   Card,
   CardHeader,
@@ -20,25 +18,24 @@ import {
   CardFooter,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/transcript/components/ui/badge"
-import { Separator } from "@/transcript/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 // import { Toaster } from "@/components/ui/sonner"
-import { toast } from "sonner"
+import { toast } from "vue-sonner"
 import { Play } from "lucide-vue-next"
 import { Download } from "lucide-vue-next"
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/transcript/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 // Initialize transcript store
 const transcriptStore = useTranscriptStore()
 
-import type { Transcript } from '@/transcript/features/zoom_resume/types'
-import { transcriptApi } from '@/transcript/features/zoom_resume/api'
-
-const router = useRouter()
+import type { Transcript } from '@/services/zoom/types'
+import { transcriptApi } from '@/services/zoom/transcriptApi'
 
 const latestZoomTranscript = ref<Transcript | null>(null)
+const ACTIVE_ZOOM_BOT_KEY = 'active_zoom_bot_id'
 
 // ===== STATE =====
 
@@ -47,23 +44,24 @@ const isJoiningZoom = ref(false)
 const activeBotId = ref<string | null>(null)
 const isEndingBot = ref(false)
 
-const props = defineProps<{
-  isDialogOpen: boolean
-  selectedTranscript: Transcript | null
-}>()
+const props = withDefaults(
+  defineProps<{
+    isDialogOpen?: boolean
+    selectedTranscript?: Transcript | null
+  }>(),
+  {
+    isDialogOpen: false,
+    selectedTranscript: null,
+  }
+)
 
 const emit = defineEmits<{
   (e: 'update:isDialogOpen', value: boolean): void
   (e: 'update:selectedTranscript', value: Transcript | null): void
 }>()
 
-const isDialogOpen = ref(false)
-const selectedTranscript = ref<Transcript | null>(null)
-const isSidebarOpen = ref(true)
-
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
+const isDialogOpen = ref(props.isDialogOpen)
+const selectedTranscript = ref(props.selectedTranscript)
 
 async function loadLatestZoomTranscript() {
   try {
@@ -74,17 +72,19 @@ async function loadLatestZoomTranscript() {
   }
 }
 
-onMounted(() => {
-  loadLatestZoomTranscript()
-})
-
 async function joinZoomMeeting() {
   if (!zoomMeetingLink.value) return
 
   isJoiningZoom.value = true
   try {
     const res = await transcriptApi.joinZoomMeeting(zoomMeetingLink.value)
-    activeBotId.value = res.bot_id
+    const status = await transcriptApi.fetchZoomBotStatus(res.bot_id)
+    if (!status.running) {
+      throw new Error('Bot belum running setelah join. Coba lagi.')
+    }
+
+    activeBotId.value = status.bot_id
+    localStorage.setItem(ACTIVE_ZOOM_BOT_KEY, status.bot_id)
     toast.success("Joined Zoom meeting", {
       description: "Bot berhasil join ke meeting. Mulai merekam audio.",
     })
@@ -115,6 +115,7 @@ async function endZoomBot() {
     })
     
     activeBotId.value = null
+    localStorage.removeItem(ACTIVE_ZOOM_BOT_KEY)
     
     // Jika ada transcript result, poll status sampai selesai
     if (response.transcript?.transcript_id) {
@@ -196,7 +197,28 @@ async function endZoomBot() {
   }
 }
 
+async function restoreActiveZoomBotState() {
+  const savedBotId = localStorage.getItem(ACTIVE_ZOOM_BOT_KEY)
+  if (!savedBotId) return
+
+  try {
+    const status = await transcriptApi.fetchZoomBotStatus(savedBotId)
+    if (status.running) {
+      activeBotId.value = status.bot_id
+      return
+    }
+
+    activeBotId.value = null
+    localStorage.removeItem(ACTIVE_ZOOM_BOT_KEY)
+  } catch (err) {
+    console.error('Failed to restore zoom bot status', err)
+    activeBotId.value = null
+    localStorage.removeItem(ACTIVE_ZOOM_BOT_KEY)
+  }
+}
+
 onMounted(() => {
+  restoreActiveZoomBotState()
   loadLatestZoomTranscript()
 })
 
@@ -536,8 +558,8 @@ function onPlaySegment(seg: TranscriptSegment) {
 
 
 // import { InfoIcon } from 'lucide-vue-next'
-// import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from '@/transcript/components/ui/input-group'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/transcript/components/ui/tooltip'
+// import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from '@/components/ui/input-group'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { AudioLinesIcon } from 'lucide-vue-next'
 
 
@@ -546,98 +568,6 @@ import { AudioLinesIcon } from 'lucide-vue-next'
 <template>
   <audio ref="audioRef" class="hidden" />
   <div class="flex h-full">
-    <!-- SIDEBAR -->
-    <aside
-  :class="[
-    'border-r bg-[#125d72] text-[#e7f6f9] flex flex-col transition-all duration-300 ease-in-out border-[#14a2ba]/30 z-40',
-    'fixed inset-y-0 left-0 h-full md:sticky md:top-0 md:h-screen',
-    isSidebarOpen ? 'w-64' : 'w-0 opacity-0 md:w-16 md:opacity-100'
-  ]"
->
-  <!-- Header -->
-  <div class="h-16 flex items-center border-b border-[#14a2ba]/30 px-8 whitespace-nowrap overflow-hidden relative group shrink-0">
-     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEica5mrcaQS_PjPVI6vsKifZ1YtQRx2HvJjaQ2dnHincaqbfxjMh8Lxa6MAXZq0jsVpim2TlPPAouZxSLLM6YTF-fZ_vU-58AycEla2KFylJKzF3tBolf-nHrVsey9YQlsvS0xIDs-0U7-p/s1359/Logo_PLN.png" alt="PLN Logo" class="w-auto h-8 transition-transform duration-300 shrink-0" :class="!isSidebarOpen && 'group-hover:scale-110'" />
-          <span :class="['transition-opacity duration-300 pl-2', isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden']">
-            PLN AI Transcription
-          </span>
-    <!-- Title -->
-    <router-link
-      to="/transcription/TranscriptionView"
-      class="flex items-center gap-2 font-semibold text-white"
-    >
-
-    </router-link>
-
-    <!-- Toggle Button -->
-    <Button
-      variant="ghost"
-      size="icon"
-      @click="toggleSidebar"
-      :class="[
-        'shrink-0 text-[#e7f6f9] hover:bg-[#14a2ba]/20 hover:text-[#efe62f]',
-        isSidebarOpen
-          ? 'ml-auto'
-          : 'absolute inset-0 w-full h-full opacity-0 hover:opacity-100 flex items-center justify-center bg-[#125d72]/90'
-      ]"
-    >
-      <PanelLeftClose v-if="isSidebarOpen" class="w-5 h-5" />
-      <PanelLeftOpen v-else class="w-5 h-5" />
-    </Button>
-
-  </div>
-
-  <!-- Menu -->
-  <div class="flex flex-col flex-1 py-4 overflow-x-hidden">
-    <nav class="grid items-start px-2 space-y-2 text-sm font-medium">
-
-      <!-- Transcript -->
-      <router-link
-        to="/transcription/TranscriptionView"
-        :class="[
-          'flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20',
-          !isSidebarOpen && 'justify-center'
-        ]"
-        active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
-        :title="!isSidebarOpen ? 'Transcript' : ''"
-      >
-        <FileText class="w-4 h-4 shrink-0" />
-        <span :class="[isSidebarOpen ? 'block' : 'hidden']">
-          Transcript
-        </span>
-      </router-link>
-
-      <!-- History -->
-      <router-link
-        to="/transcription/transcript-list"
-        :class="[
-          'flex items-center gap-3 rounded-lg px-3 py-2 text-[#e7f6f9]/80 transition-all hover:text-[#efe62f] hover:bg-[#14a2ba]/20',
-          !isSidebarOpen && 'justify-center'
-        ]"
-        active-class="bg-[#14a2ba]/30 text-[#efe62f] border-r-2 border-[#efe62f]"
-        :title="!isSidebarOpen ? 'History' : ''"
-      >
-        <History class="w-4 h-4 shrink-0" />
-        <span :class="[isSidebarOpen ? 'block' : 'hidden']">
-          History
-        </span>
-      </router-link>
-
-    </nav>
-
-    <!-- Bottom button -->
-    <div class="px-2 mt-auto">
-      <Button
-        @click="$router.push('/')"
-        class="w-full mt-4 bg-[#14a2ba] hover:bg-[#0f7f91] text-white"
-        :class="[!isSidebarOpen && 'hidden']"
-      >
-        Return to Homepage
-      </Button>
-    </div>
-
-  </div>
-</aside>
-
     <!-- MAIN CONTENT -->
     <div class="flex flex-col w-full h-full gap-6">
       <div class="flex items-center w-1/3 gap-2 mx-auto">
@@ -763,7 +693,7 @@ import { AudioLinesIcon } from 'lucide-vue-next'
                       type="text"
                       placeholder="https://zoom.us/j/1234567890"
                       class="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#14a2ba]"
-                      !disabled="!!activeBotId"
+                      :disabled="!!activeBotId"
                       />
                       <Button 
                       v-if = "!activeBotId"

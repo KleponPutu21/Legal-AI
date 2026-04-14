@@ -246,7 +246,7 @@ const scrollToSection = (id: string) => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <router-link to="/transcription/api" class="block h-full">
+                 <router-link to="/meeting" class="block h-full">
                    <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
                     <CardHeader>
                       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
@@ -266,7 +266,7 @@ const scrollToSection = (id: string) => {
 
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <router-link to="/transcription/web" class="block h-full">
+                 <router-link to="/meeting" class="block h-full">
                    <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
                     <CardHeader>
                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
@@ -286,7 +286,7 @@ const scrollToSection = (id: string) => {
 
              <div class="group relative">
                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                 <router-link to="/transcription/integration" class="block h-full">
+                 <router-link to="/meeting" class="block h-full">
                    <Card class="relative h-full bg-card/50 backdrop-blur-xl border-white/20 hover:-translate-y-2 transition-transform duration-300">
                     <CardHeader>
                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg">
