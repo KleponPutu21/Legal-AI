@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChatHistory } from '@/composables/useChatHistory'
-import { sendMessage, type ChatMessage } from '@/services/api'
+import { sendMessage, getAvailableModels, type ChatMessage, type ModelInfo } from '@/services/api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Send, User, Bot , ChevronDown} from 'lucide-vue-next'
@@ -29,6 +29,43 @@ const inputMessage = ref('')
 const isLoading = ref(false)
 const currentModel = ref('base-model') 
 const showModelSelector = ref(false)
+const isFineTunedAvailable = ref(true)
+const fineTunedStatusText = ref('')
+const isCheckingModels = ref(false)
+
+const checkModelAvailability = async () => {
+  isCheckingModels.value = true
+  try {
+    const models = await getAvailableModels()
+    const ftModel = models.find(m => m.id === 'fine-tuned-v1')
+    if (ftModel) {
+      isFineTunedAvailable.value = ftModel.available
+      fineTunedStatusText.value = ftModel.message || (ftModel.available ? 'Tersedia' : 'Offline')
+      if (!ftModel.available && currentModel.value === 'fine-tuned-v1') {
+        currentModel.value = 'base-model'
+      }
+    } else {
+      isFineTunedAvailable.value = true
+    }
+  } catch (err) {
+    console.warn('Error checking models:', err)
+    isFineTunedAvailable.value = true
+  } finally {
+    isCheckingModels.value = false
+  }
+}
+
+const selectModel = (modelId: string) => {
+  if (modelId === 'fine-tuned-v1' && !isFineTunedAvailable.value) {
+    return
+  }
+  currentModel.value = modelId
+  showModelSelector.value = false
+}
+
+onMounted(() => {
+  checkModelAvailability()
+})
 
 // Initial Welcome Message
 const welcomeMessage: ChatMessage = {
@@ -226,30 +263,62 @@ const handleKeydown = (e: KeyboardEvent) => {
               <div class="relative pb-5 pl-4">
                 <button 
                   @click="showModelSelector = !showModelSelector"
-                  class="flex items-center gap-2 px-3 py-2 bg-[#e7f6f9] hover:bg-[#d1eff4] rounded-xl text-[#125d72] text-xs font-medium transition-all duration-200 whitespace-nowrap"
+                  class="flex items-center gap-2 px-3 py-2 bg-[#e7f6f9] hover:bg-[#d1eff4] rounded-xl text-[#125d72] text-xs font-medium transition-all duration-200 whitespace-nowrap shadow-sm"
                   type="button"
                 >
+                  <span 
+                    class="w-2 h-2 rounded-full" 
+                    :class="currentModel === 'fine-tuned-v1' ? 'bg-[#14a2ba]' : 'bg-emerald-500'"
+                  ></span>
                   <span>{{ currentModel === 'base-model' ? 'Base Model' : 'Fine-tuned v1' }}</span>
                   <ChevronDown class="w-3 h-3 transition-transform duration-200" :class="{ 'rotate-180': showModelSelector }" />
                 </button>
                 
                 <div v-if="showModelSelector" 
-                     class="absolute bottom-full left-0 mb-2 w-48 bg-white/95 backdrop-blur-xl border border-[#14a2ba]/20 rounded-xl shadow-xl shadow-[#125d72]/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200"
+                     class="absolute bottom-full left-0 mb-2 w-56 bg-white/95 backdrop-blur-xl border border-[#14a2ba]/20 rounded-xl shadow-xl shadow-[#125d72]/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200"
                      @mouseleave="showModelSelector = false"
                 >
-                  <div class="p-1">
+                  <div class="p-1.5 space-y-1">
+                    <!-- Base Model Option -->
                     <button 
-                      @click="currentModel = 'base-model'; showModelSelector = false"
-                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors"
-                      :class="currentModel === 'base-model' ? 'bg-[#e7f6f9] text-[#125d72] font-medium' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
+                      @click="selectModel('base-model')"
+                      type="button"
+                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between group"
+                      :class="currentModel === 'base-model' ? 'bg-[#e7f6f9] text-[#125d72] font-semibold' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]'"
                     >
-                      Base Model
+                      <div class="flex flex-col">
+                        <span>Base Model</span>
+                        <span class="text-[10px] text-[#125d72]/50 font-normal">Qwen 2.5 7B</span>
+                      </div>
+                      <span class="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Aktif
+                      </span>
                     </button>
+
+                    <!-- Fine-tuned Model Option -->
                     <button 
-                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors text-[#125d72]/40 bg-gray-50 cursor-not-allowed"
-                      disabled
+                      @click="selectModel('fine-tuned-v1')"
+                      :disabled="!isFineTunedAvailable"
+                      type="button"
+                      class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between group"
+                      :class="[
+                        !isFineTunedAvailable 
+                          ? 'text-[#125d72]/40 bg-gray-50/70 cursor-not-allowed opacity-75' 
+                          : (currentModel === 'fine-tuned-v1' ? 'bg-[#e7f6f9] text-[#125d72] font-semibold' : 'text-[#125d72]/70 hover:bg-[#e7f6f9]/50 hover:text-[#125d72]')
+                      ]"
                     >
-                      Fine-tuned v1 (Coming Soon)
+                      <div class="flex flex-col">
+                        <span>Fine-tuned v1</span>
+                        <span class="text-[10px] font-normal" :class="isFineTunedAvailable ? 'text-[#125d72]/50' : 'text-gray-400'">Legal Specialist</span>
+                      </div>
+                      <span 
+                        class="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full"
+                        :class="isFineTunedAvailable ? 'text-emerald-600 bg-emerald-50' : 'text-gray-500 bg-gray-100'"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full" :class="isFineTunedAvailable ? 'bg-emerald-500' : 'bg-gray-400'"></span>
+                        {{ isFineTunedAvailable ? 'Tersedia' : (fineTunedStatusText || 'Offline') }}
+                      </span>
                     </button>
                   </div>
                 </div>

@@ -1,12 +1,13 @@
 import os
+import io
+from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from huggingface_hub import InferenceClient
 import pypdf
-import io
-from pathlib import Path
+import requests
 
 # Load environment variables from backend directory
 env_path = Path(__file__).parent / '.env'
@@ -42,7 +43,60 @@ class ChatRequest(BaseModel):
 def read_root():
     return {"message": "LegalBot ID API is running"}
 
-import requests
+@app.get("/api/models")
+def get_models_status():
+    """
+    Mengembalikan daftar model dan status ketersediaannya secara dinamis.
+    """
+    hf_token = os.getenv("HF_TOKEN")
+    base_available = bool(hf_token)
+    
+    inf_url = os.getenv("INFERENCE_URL")
+    inf_key = os.getenv("INFERENCE_API_KEY")
+    force_enable = os.getenv("ENABLE_FINE_TUNED_MODEL", "").strip().lower() in ("true", "1", "yes")
+    
+    fine_tuned_available = False
+    fine_tuned_status = "unconfigured"
+    fine_tuned_message = "INFERENCE_URL belum dikonfigurasi"
+    
+    if force_enable:
+        fine_tuned_available = True
+        fine_tuned_status = "online"
+        fine_tuned_message = "Tersedia"
+    elif inf_url:
+        try:
+            headers = {}
+            if inf_key:
+                headers["X-API-KEY"] = inf_key
+            # Quick health check with timeout (2 seconds)
+            requests.get(inf_url, headers=headers, timeout=2.0)
+            fine_tuned_available = True
+            fine_tuned_status = "online"
+            fine_tuned_message = "Tersedia"
+        except requests.exceptions.RequestException:
+            fine_tuned_available = False
+            fine_tuned_status = "offline"
+            fine_tuned_message = "Server offline"
+
+    return {
+        "models": [
+            {
+                "id": "base-model",
+                "name": "Base Model",
+                "available": base_available,
+                "status": "online" if base_available else "unconfigured",
+                "description": "Model dasar Qwen2.5-7B-Instruct via Hugging Face"
+            },
+            {
+                "id": "fine-tuned-v1",
+                "name": "Fine-tuned v1",
+                "available": fine_tuned_available,
+                "status": fine_tuned_status,
+                "message": fine_tuned_message,
+                "description": "Model fine-tuned spesialis hukum Indonesia"
+            }
+        ]
+    }
 
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
@@ -56,7 +110,14 @@ async def chat_endpoint(request: ChatRequest):
         
         # Check model selection
         if request.model_id == "fine-tuned-v1":
-            if not INFERENCE_URL or not INFERENCE_API_KEY:
+            inf_url = os.getenv("INFERENCE_URL") or INFERENCE_URL
+            inf_key = os.getenv("INFERENCE_API_KEY") or INFERENCE_API_KEY
+            force_enable = os.getenv("ENABLE_FINE_TUNED_MODEL", "").strip().lower() in ("true", "1", "yes")
+            
+            if (not inf_url or not inf_key) and force_enable:
+                return {"response": f"Halo! Ini adalah respon simulasi dari model **Fine-tuned v1 (Legal Specialist)**.\n\nAnda menanyakan: *\"{request.message}\"*.\n\n*(Catatan: Model fine-tuned aktif dalam mode simulasi. Untuk menghubungkan ke server model sungguhan, konfigurasikan `INFERENCE_URL` dan `INFERENCE_API_KEY` di file `.env`)*"}
+
+            if not inf_url or not inf_key:
                  raise HTTPException(status_code=500, detail="INFERENCE_URL or INFERENCE_API_KEY not configured for Fine-tuned v1")
             
             # Using direct HTTP request for custom model to avoid automatic path appending

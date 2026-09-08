@@ -13,6 +13,45 @@ export interface ChatMessage {
     timestamp: Date;
 }
 
+// Tipe data untuk informasi model
+export interface ModelInfo {
+    id: string;
+    name: string;
+    available: boolean;
+    status?: string;
+    message?: string;
+    description?: string;
+}
+
+/**
+ * Mengambil daftar model AI yang tersedia dari backend
+ */
+export async function getAvailableModels(): Promise<ModelInfo[]> {
+    try {
+        const response = await fetch(`${API_URL}/api/models`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server returned status ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.models || [];
+    } catch (error) {
+        console.warn('Backend /api/models tidak dapat dihubungi, fallback ke mode aktif:', error);
+        // Fallback jika backend tidak aktif atau belum siap:
+        // Sesuai permintaan "if cannot, just enable it for now", aktifkan opsi model
+        return [
+            { id: 'base-model', name: 'Base Model', available: true, status: 'online' },
+            { id: 'fine-tuned-v1', name: 'Fine-tuned v1', available: true, status: 'online', message: 'Tersedia' }
+        ];
+    }
+}
+
 /**
  * Mengirim pesan ke AI
  */
